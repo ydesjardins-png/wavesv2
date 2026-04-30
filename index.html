@@ -225,6 +225,30 @@
   .hero-flank-pill strong { color: var(--white); font-weight: 700; }
   .hero-flank-pill.right { text-align: left; }
 
+  /* Checkmark list inside flank pills */
+  .flank-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex; flex-direction: column;
+    gap: 8px;
+  }
+  .flank-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .flank-list li::before {
+    content: '';
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    margin-top: 1px;
+    border-radius: 50%;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230D0B1F' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12.5l4 4L19 7'/></svg>") center/11px 11px no-repeat,
+      linear-gradient(135deg, #1DE9C6 0%, #00E5FF 100%);
+    box-shadow: 0 2px 8px rgba(0,229,255,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+
   @media (max-width: 1023px) {
     .hero-flank-row {
       flex-direction: column;
@@ -233,8 +257,8 @@
     }
     .hero-flank-pill {
       flex: 0 0 auto;
-      max-width: 420px; width: 100%;
-      text-align: center;
+      max-width: 380px; width: 100%;
+      /* keep text-align: left so checkmarks line up cleanly even on mobile */
     }
   }
 
@@ -1655,14 +1679,18 @@
   <!-- MIDDLE: two glass pills flanking the bills -->
   <div class="hero-flank-row">
     <div class="hero-flank-pill hero-fade d2">
-      <strong>No credit check.</strong><br>
-      No paperwork.<br>
-      Flexible repayment.
+      <ul class="flank-list">
+        <li><strong>No credit check.</strong></li>
+        <li>No paperwork.</li>
+        <li>Flexible repayment.</li>
+      </ul>
     </div>
     <div class="hero-flank-pill right hero-fade d3">
-      Apply in 5 minutes.<br>
-      Sign your contract online.<br>
-      Wait for your money.
+      <ul class="flank-list">
+        <li>Apply in 5 minutes.</li>
+        <li>Sign your contract online.</li>
+        <li>Wait for your money.</li>
+      </ul>
     </div>
   </div>
 
