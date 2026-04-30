@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════════════════════
+  WAVES FINANCIAL — LOAN CALCULATOR BLOCK (extracted from index.html hero)
+  Saved: 2026-04-30
+  ═══════════════════════════════════════════════════════════════════════════
+
+  HOW TO REUSE THIS BLOCK
+  -----------------------
+  Copy the three sections below into wherever you want it to live:
+
+    1) STYLES → goes in your <style> tag (depends on Waves' CSS variables —
+       see the <style> at the bottom of this file for fallbacks)
+    2) MARKUP → drop the <div id="calculator"> wherever it should appear
+    3) SCRIPT → goes in any <script> block that runs after the markup
+
+  CSS DEPENDENCIES — these custom properties must be defined upstream:
+    --card-bg, --border, --r-xl, --r-md, --r-sm, --shadow,
+    --lavender, --periwinkle, --iris, --teal, --cyan, --white,
+    --text-muted, --deep, --font-display, --font-body
+
+  This file renders standalone — open it in a browser to verify it works.
+  ═══════════════════════════════════════════════════════════════════════════
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saved — Loan Calculator Block</title>
+
+<!-- ─── 1) STYLES ─────────────────────────────────────────────────────────── -->
+<style>
+  /* ─── BRAND TOKENS (only needed for standalone preview — already exist in index.html) ─── */
+  :root {
+    --deep:       #0D0B1F;
+    --iris:       #5B52D8;
+    --lavender:   #7B74F0;
+    --periwinkle: #A09AF5;
+    --teal:       #1DE9C6;
+    --cyan:       #00E5FF;
+    --white:      #FFFFFF;
+    --text-muted: #9B97C5;
+    --card-bg:    rgba(30,22,80,0.6);
+    --border:     rgba(160,154,245,0.18);
+    --shadow:     0 24px 80px rgba(13,11,31,0.6);
+    --r-sm: 12px;
+    --r-md: 20px;
+    --r-xl: 48px;
+    --font-display: 'Plus Jakarta Sans', sans-serif;
+    --font-body:    'DM Sans', sans-serif;
+  }
+
+  /* ─── CALCULATOR CARD ─── */
+  .calc-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    padding: 36px;
+    box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative; overflow: hidden;
+    animation: card-float 6s ease-in-out infinite;
+  }
+  @keyframes card-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  .calc-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--lavender), transparent);
+  }
+
+  .calc-header { margin-bottom: 28px; }
+  .calc-title {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 700;
+    color: var(--periwinkle); margin-bottom: 4px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .calc-amount {
+    font-family: var(--font-display);
+    font-size: 3.5rem; font-weight: 800;
+    line-height: 1; letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--white) 0%, var(--periwinkle) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .slider-wrap { margin-bottom: 28px; }
+  .slider-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.78rem; color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  input[type="range"] {
+    -webkit-appearance: none; width: 100%; height: 6px;
+    border-radius: 3px; outline: none; cursor: pointer;
+    background: linear-gradient(to right, var(--iris) 0%, var(--iris) 50%, rgba(160,154,245,0.2) 50%, rgba(160,154,245,0.2) 100%);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 22px; height: 22px;
+    border-radius: 50%; background: var(--white);
+    box-shadow: 0 2px 12px rgba(91,82,216,0.5);
+    border: 3px solid var(--iris);
+    transition: transform 0.15s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+  .freq-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 24px;
+  }
+  .freq-btn {
+    padding: 12px 10px; border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted);
+    font-family: var(--font-body); font-size: 0.82rem; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+    min-height: 44px;
+  }
+  .freq-btn.active {
+    background: rgba(91,82,216,0.3);
+    border-color: var(--iris); color: var(--white);
+  }
+  .freq-btn:hover:not(.active) { border-color: var(--lavender); color: var(--white); }
+
+  .calc-summary {
+    background: rgba(13,11,31,0.5);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md); padding: 16px 20px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 24px;
+  }
+  .summary-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .summary-val { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--white); }
+  .summary-val.accent { color: var(--teal); }
+
+  .calc-cta {
+    display: block; width: 100%; padding: 16px;
+    border-radius: var(--r-md); border: none; cursor: pointer;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--cyan) 100%);
+    color: var(--deep); font-family: var(--font-display);
+    font-size: 1.05rem; font-weight: 700;
+    box-shadow: 0 8px 28px rgba(0,229,255,0.3);
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .calc-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,229,255,0.45); }
+
+  .calc-note {
+    text-align: center; font-size: 0.73rem;
+    color: var(--text-muted); margin-top: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* ─── PREVIEW WRAPPER (delete when reusing inline) ─── */
+  body {
+    font-family: var(--font-body);
+    background: var(--deep);
+    color: var(--white);
+    margin: 0;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+  }
+  .preview-shell { width: 100%; max-width: 460px; }
+</style>
+</head>
+<body>
+<div class="preview-shell">
+
+<!-- ─── 2) MARKUP — drop this wherever the calculator should live ─────────── -->
+<div id="calculator">
+  <div class="calc-card">
+    <div class="calc-header">
+      <div class="calc-title">How much do you need?</div>
+      <div class="calc-amount" id="calc-display">$750</div>
+    </div>
+
+    <div class="slider-wrap">
+      <label for="loan-slider" class="sr-only">Loan amount</label>
+      <div class="slider-labels">
+        <span>$500</span><span>$1,000</span>
+      </div>
+      <input type="range" id="loan-slider" min="500" max="1000" value="800" step="100"
+             aria-label="Loan amount" aria-valuemin="500" aria-valuemax="1000"
+             aria-valuenow="800" aria-valuetext="$750">
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <div class="summary-label" style="margin-bottom:8px;">Payment Frequency</div>
+      <div class="freq-grid">
+        <button class="freq-btn active" onclick="selectFreq(this,'Weekly')">Weekly</button>
+        <button class="freq-btn" onclick="selectFreq(this,'Biweekly')">Every 2 Weeks</button>
+        <button class="freq-btn" onclick="selectFreq(this,'Monthly')">Monthly</button>
+      </div>
+    </div>
+
+    <div class="calc-summary">
+      <div class="summary-item">
+        <div class="summary-label">Loan Amount</div>
+        <div class="summary-val" id="sum-amount">$750</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">APR</div>
+        <div class="summary-val">23%</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Repayment Period</div>
+        <div class="summary-val" id="sum-period">90 – 150 days</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Est. Total Repayment</div>
+        <div class="summary-val accent" id="sum-total">~$1,030</div>
+      </div>
+    </div>
+
+    <button class="calc-cta"
+            onclick="window.location.href='apply.html?amount='+document.getElementById('loan-slider').value">
+      Get My Cash Now →
+    </button>
+    <p class="calc-note">
+      🔒 No credit check · No fees to apply · Instant decision
+    </p>
+  </div>
+</div>
+
+</div>
+
+<!-- ─── 3) SCRIPT ─────────────────────────────────────────────────────────── -->
+<script>
+  const slider      = document.getElementById('loan-slider');
+  const calcDisplay = document.getElementById('calc-display');
+  const sumAmount   = document.getElementById('sum-amount');
+  const sumTotal    = document.getElementById('sum-total');
+
+  function updateCalc() {
+    const val = parseInt(slider.value);
+    const pct = (val - 500) / 500 * 100;
+    calcDisplay.textContent = '$' + val.toLocaleString();
+    sumAmount.textContent   = '$' + val.toLocaleString();
+    sumTotal.textContent    = '~$' + (Math.round(val * 1.375 / 10) * 10).toLocaleString();
+    slider.style.background = `linear-gradient(to right,var(--iris) 0%,var(--iris) ${pct}%,rgba(160,154,245,0.2) ${pct}%,rgba(160,154,245,0.2) 100%)`;
+    slider.setAttribute('aria-valuenow', val);
+    slider.setAttribute('aria-valuetext', '$' + val.toLocaleString());
+  }
+  slider.addEventListener('input', updateCalc);
+  updateCalc();
+
+  function selectFreq(btn, freq) {
+    document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

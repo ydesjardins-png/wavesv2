@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup B — Waves Aurora — Waves Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: #0D0B1F;
+    overflow-x: hidden;
+    /* Aurora bleed — purple + teal/cyan injection (Waves brand) */
+    background:
+      radial-gradient(ellipse 70% 70% at 0% 30%,  #5B52D8 0%, transparent 55%),
+      radial-gradient(ellipse 70% 70% at 100% 70%, #1DE9C6 0%, transparent 55%),
+      radial-gradient(ellipse 90% 60% at 50% 0%,  #7B74F0 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, #3B35B0 0%, transparent 60%),
+      linear-gradient(135deg, #6B5BBF 0%, #8E76C8 40%, #4FC3F7 100%);
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .mockup-tag {
+    position: fixed; top: 12px; left: 12px; z-index: 100;
+    background: rgba(13,11,31,0.85); color: #fff;
+    padding: 6px 12px; border-radius: 100px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ─── HERO FRAME ─── */
+  .hero-frame {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.4),
+      0 30px 80px rgba(13,11,31,0.3),
+      0 60px 120px rgba(0,229,255,0.15);
+    min-height: calc(100vh - 48px);
+    /* Light cloudy top → deep navy bottom (Waves' deep palette) */
+    background:
+      radial-gradient(ellipse 90% 35% at 50% 0%, #ffffff 0%, transparent 60%),
+      radial-gradient(ellipse 60% 25% at 25% 14%, rgba(255,255,255,0.55) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 22% at 78% 12%, rgba(180,220,255,0.5) 0%, transparent 70%),
+      linear-gradient(180deg,
+        #E8E1F5 0%,
+        #B6C4E5 22%,
+        #5C6FB8 50%,
+        #1E1650 78%,
+        #0D0B1F 100%);
+  }
+
+  /* Subtle wave curve decoration in lower portion */
+  .wave-curve {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* ─── TOP NAV ─── */
+  .nav {
+    position: relative; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 48px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800; font-size: 1.05rem;
+    color: #0D0B1F;
+    line-height: 1.1;
+  }
+  .brand-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #5B52D8 0%, #1DE9C6 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 0.95rem;
+  }
+  .brand-name { display: flex; flex-direction: column; }
+  .brand-name small {
+    font-size: 0.62rem; font-weight: 600;
+    color: #5B52D8; letter-spacing: 0.08em; text-transform: uppercase;
+    line-height: 1;
+  }
+  .nav-links {
+    display: flex; gap: 32px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.92rem; font-weight: 500;
+    color: #2D2580;
+  }
+  .nav-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: #5B52D8; }
+  .nav-cta {
+    padding: 10px 22px; border-radius: 100px;
+    background: linear-gradient(135deg, #1DE9C6 0%, #00E5FF 100%);
+    color: #0D0B1F; font-weight: 700;
+    text-decoration: none; font-size: 0.92rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    box-shadow: 0 4px 16px rgba(0,229,255,0.4);
+    transition: transform 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); }
+
+  /* ─── HERO CONTENT ─── */
+  .hero-content {
+    position: relative; z-index: 5;
+    text-align: center;
+    padding: 48px 24px 0;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 18px; border-radius: 100px;
+    background: rgba(255,255,255,0.45);
+    border: 1px solid rgba(45,37,128,0.18);
+    backdrop-filter: blur(8px);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    color: #2D2580;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #1DE9C6;
+    box-shadow: 0 0 8px #1DE9C6;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1.hero-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: #0D0B1F;
+    max-width: 14ch;
+    margin: 0 auto 16px;
+  }
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(13,11,31,0.65);
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.5;
+  }
+
+  /* ─── BILL FLOATING STAGE ─── */
+  .stage {
+    position: relative;
+    margin-top: 24px;
+    height: 460px;
+    overflow: hidden;
+  }
+
+  /* Faded WAVES wordmark behind bill */
+  .wordmark {
+    position: absolute;
+    bottom: 12%;
+    left: 50%; transform: translateX(-50%);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(4rem, 12vw, 11rem);
+    letter-spacing: -0.02em;
+    color: rgba(255,255,255,0.10);
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .wordmark-sub {
+    position: absolute;
+    bottom: calc(12% - 18px);
+    left: 50%; transform: translateX(-50%);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.4em;
+    color: rgba(255,255,255,0.20);
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+
+  /* Glow ring under the floating bill */
+  .glow-ring {
+    position: absolute;
+    left: 50%; top: 56%;
+    transform: translate(-50%, -50%);
+    width: 540px; height: 220px;
+    background: radial-gradient(ellipse at center,
+      rgba(0,229,255,0.4) 0%,
+      rgba(91,82,216,0.3) 30%,
+      rgba(91,82,216,0) 70%);
+    filter: blur(40px);
+    z-index: 2;
+    pointer-events: none;
+    animation: glow-pulse 4s ease-in-out infinite;
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.05); }
+  }
+
+  /* The bill — floating, no hand */
+  .bill {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%) rotate(-6deg);
+    width: 380px;
+    z-index: 4;
+    filter:
+      drop-shadow(0 28px 48px rgba(13,11,31,0.55))
+      drop-shadow(0 12px 24px rgba(91,82,216,0.4));
+    animation: float-bill 5s ease-in-out infinite;
+  }
+  @keyframes float-bill {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-6deg) translateY(0); }
+    50%      { transform: translate(-50%, -50%) rotate(-4deg) translateY(-12px); }
+  }
+
+  /* Floating sparkle particles */
+  .sparkle {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0,229,255,0.8);
+    z-index: 3;
+    animation: sparkle-float 6s ease-in-out infinite;
+  }
+  .sparkle:nth-child(1) { top: 25%; left: 28%; animation-delay: 0s; }
+  .sparkle:nth-child(2) { top: 45%; left: 70%; animation-delay: 1s; width: 3px; height: 3px; }
+  .sparkle:nth-child(3) { top: 65%; left: 30%; animation-delay: 2s; width: 5px; height: 5px; }
+  .sparkle:nth-child(4) { top: 35%; left: 75%; animation-delay: 3s; }
+  .sparkle:nth-child(5) { top: 60%; left: 65%; animation-delay: 1.5s; width: 3px; height: 3px; }
+  @keyframes sparkle-float {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50%      { opacity: 1;   transform: translateY(-12px); }
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .hero-frame { border-radius: 20px; min-height: calc(100vh - 24px); }
+    .nav { padding: 18px 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 24px 16px 0; }
+    .stage { height: 360px; margin-top: 8px; }
+    .bill { width: 260px; }
+    .glow-ring { width: 360px; height: 160px; }
+    .wordmark { font-size: 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-tag">Mockup B — Waves Aurora</div>
+
+<section class="hero-frame">
+
+  <!-- Wave curve decoration -->
+  <svg class="wave-curve" viewBox="0 0 1280 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="waveLineB" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="rgba(0,229,255,0)"/>
+        <stop offset="50%"  stop-color="rgba(0,229,255,0.35)"/>
+        <stop offset="100%" stop-color="rgba(0,229,255,0)"/>
+      </linearGradient>
+      <linearGradient id="waveLineB2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="rgba(123,116,240,0)"/>
+        <stop offset="50%"  stop-color="rgba(123,116,240,0.4)"/>
+        <stop offset="100%" stop-color="rgba(123,116,240,0)"/>
+      </linearGradient>
+    </defs>
+    <path d="M0 720 Q 320 660 640 720 T 1280 720"
+          fill="none" stroke="url(#waveLineB)" stroke-width="1.5"/>
+    <path d="M0 760 Q 320 700 640 760 T 1280 760"
+          fill="none" stroke="url(#waveLineB2)" stroke-width="1.2"/>
+    <path d="M0 800 Q 320 740 640 800 T 1280 800"
+          fill="none" stroke="url(#waveLineB)" stroke-width="1"/>
+  </svg>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#" class="brand">
+      <span class="brand-mark">W</span>
+      <span class="brand-name">
+        Waves
+        <small>Financial</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="#">Borrow</a>
+      <a href="#">How It Works</a>
+      <a href="#">FAQ</a>
+      <a href="#">About</a>
+    </div>
+    <a href="#" class="nav-cta">Apply Now →</a>
+  </nav>
+
+  <!-- HERO CONTENT -->
+  <div class="hero-content">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      Fast Cash · Up to $1,000 · No Credit Check
+    </div>
+    <h1 class="hero-title">
+      Cash when you need it,<br>without the wait.
+    </h1>
+    <p class="hero-sub">
+      e-Transfer in minutes. 100% online. Licensed Canadian lender.
+    </p>
+  </div>
+
+  <!-- FLOATING BILL STAGE -->
+  <div class="stage">
+    <div class="wordmark-sub">Lend · Borrow · Repay</div>
+    <div class="wordmark">WAVES</div>
+
+    <div class="glow-ring"></div>
+
+    <span class="sparkle"></span>
+    <span class="sparkle"></span>
+    <span class="sparkle"></span>
+    <span class="sparkle"></span>
+    <span class="sparkle"></span>
+
+    <!-- BILL: stylized Canadian $20 polymer note -->
+    <svg class="bill" viewBox="0 0 320 145" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="billB" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%"  stop-color="#A8D5B5"/>
+          <stop offset="35%" stop-color="#7FB28C"/>
+          <stop offset="70%" stop-color="#5C9670"/>
+          <stop offset="100%" stop-color="#3F7A55"/>
+        </linearGradient>
+        <linearGradient id="billHighlightB" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </linearGradient>
+        <pattern id="guillocheB" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="7" cy="7" r="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.4"/>
+          <circle cx="0" cy="0" r="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.4"/>
+          <circle cx="14" cy="14" r="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.4"/>
+        </pattern>
+        <radialGradient id="cameoB" cx="0.5" cy="0.45" r="0.6">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
+          <stop offset="60%" stop-color="rgba(255,255,255,0.15)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Bill body -->
+      <rect x="0" y="0" width="320" height="145" rx="6" fill="url(#billB)"/>
+      <rect x="0" y="0" width="320" height="145" rx="6" fill="url(#guillocheB)"/>
+      <rect x="0" y="0" width="320" height="60" rx="6" fill="url(#billHighlightB)"/>
+
+      <!-- Polymer transparent strip -->
+      <rect x="244" y="6" width="22" height="133" rx="2"
+            fill="rgba(180,220,200,0.22)" stroke="rgba(255,255,255,0.18)" stroke-width="0.5"/>
+      <circle cx="255" cy="30"  r="5" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.6"/>
+      <circle cx="255" cy="30"  r="3" fill="rgba(255,255,255,0.25)"/>
+      <path d="M255 55 l3 5 l-3 5 l-3 -5 z" fill="rgba(255,255,255,0.35)"/>
+      <path d="M255 75 l3 5 l-3 5 l-3 -5 z" fill="rgba(255,255,255,0.35)"/>
+      <circle cx="255" cy="105" r="5" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.6"/>
+      <text x="255" y="128" text-anchor="middle"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="700"
+            font-size="9" fill="rgba(255,255,255,0.55)">20</text>
+
+      <!-- Cameo / portrait silhouette -->
+      <ellipse cx="190" cy="72" rx="34" ry="44"
+               fill="rgba(255,255,255,0.18)"
+               stroke="rgba(255,255,255,0.35)" stroke-width="0.8"/>
+      <ellipse cx="190" cy="72" rx="34" ry="44" fill="url(#cameoB)"/>
+      <g opacity="0.4">
+        <circle cx="190" cy="62" r="11" fill="#2A4D38"/>
+        <path d="M170 110 Q190 80 210 110 Z" fill="#2A4D38"/>
+      </g>
+      <ellipse cx="190" cy="72" rx="38" ry="48"
+               fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.4" stroke-dasharray="2 2"/>
+
+      <!-- Big "20" left side -->
+      <text x="22" y="108"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="800"
+            font-size="74" fill="rgba(255,255,255,0.95)"
+            letter-spacing="-3">20</text>
+      <text x="22" y="62"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="700"
+            font-size="22" fill="rgba(255,255,255,0.85)">$</text>
+
+      <!-- "CANADA" wordmark -->
+      <text x="22" y="38"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="700"
+            font-size="11" fill="rgba(255,255,255,0.85)"
+            letter-spacing="2">CANADA</text>
+
+      <!-- Maple leaf -->
+      <g transform="translate(218, 14) scale(0.9)" fill="rgba(255,255,255,0.85)">
+        <path d="M10 0 L11.6 4.5 L16 3.2 L13.5 7 L18 8 L14 10.5 L16.5 14 L11.6 13 L11 18 L10 15.2 L9 18 L8.4 13 L3.5 14 L6 10.5 L2 8 L6.5 7 L4 3.2 L8.4 4.5 Z"/>
+      </g>
+
+      <text x="278" y="26"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="800"
+            font-size="14" fill="rgba(255,255,255,0.85)">20</text>
+
+      <text x="22" y="132"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="500"
+            font-size="6" fill="rgba(255,255,255,0.6)" letter-spacing="1">
+        TWENTY DOLLARS · VINGT DOLLARS
+      </text>
+
+      <rect x="0" y="0" width="320" height="145" rx="6"
+            fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1"/>
+    </svg>
+  </div>
+
+</section>
+
+</body>
+</html>

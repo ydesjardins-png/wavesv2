@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup A — Avalon Faithful — Waves Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: #0D0B1F;
+    overflow-x: hidden;
+    /* Aurora bleed — pink, violet, lavender */
+    background:
+      radial-gradient(ellipse 60% 80% at 5% 50%, #C9A8F5 0%, transparent 55%),
+      radial-gradient(ellipse 70% 90% at 95% 50%, #F4B8E4 0%, transparent 55%),
+      radial-gradient(ellipse 80% 60% at 50% 0%,  #8E76E0 0%, transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 100%, #6B5BBF 0%, transparent 60%),
+      linear-gradient(135deg, #7B5FCC 0%, #B47CD8 50%, #E89BC9 100%);
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .mockup-tag {
+    position: fixed; top: 12px; left: 12px; z-index: 100;
+    background: rgba(13,11,31,0.85); color: #fff;
+    padding: 6px 12px; border-radius: 100px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ─── HERO FRAME ─── */
+  .hero-frame {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.4),
+      0 30px 80px rgba(13,11,31,0.25),
+      0 60px 120px rgba(91,82,216,0.2);
+    min-height: calc(100vh - 48px);
+    /* Light top → deep violet bottom, cloud-like wash */
+    background:
+      radial-gradient(ellipse 90% 40% at 50% 0%, #ffffff 0%, transparent 60%),
+      radial-gradient(ellipse 60% 30% at 30% 15%, rgba(255,255,255,0.7) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 25% at 75% 12%, rgba(255,255,255,0.5) 0%, transparent 70%),
+      linear-gradient(180deg,
+        #DFD2F0 0%,
+        #C9B8E8 25%,
+        #8E76C8 55%,
+        #4A3A7A 80%,
+        #1F1545 100%);
+  }
+
+  /* ─── TOP NAV ─── */
+  .nav {
+    position: relative; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 48px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800; font-size: 1.05rem;
+    color: #0D0B1F;
+    line-height: 1.1;
+  }
+  .brand-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #5B52D8 0%, #1DE9C6 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 0.95rem;
+  }
+  .brand-name { display: flex; flex-direction: column; }
+  .brand-name small {
+    font-size: 0.62rem; font-weight: 600;
+    color: #5B52D8; letter-spacing: 0.08em; text-transform: uppercase;
+    line-height: 1;
+  }
+  .nav-links {
+    display: flex; gap: 32px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.92rem; font-weight: 500;
+    color: #2D2580;
+  }
+  .nav-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: #5B52D8; }
+  .nav-cta {
+    padding: 10px 22px; border-radius: 100px;
+    background: linear-gradient(135deg, #C9A8F5 0%, #E89BC9 100%);
+    color: #2D2580; font-weight: 700;
+    text-decoration: none; font-size: 0.92rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    box-shadow: 0 4px 16px rgba(201,168,245,0.5);
+    transition: transform 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); }
+
+  /* ─── HERO CONTENT ─── */
+  .hero-content {
+    position: relative; z-index: 5;
+    text-align: center;
+    padding: 48px 24px 0;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 18px; border-radius: 100px;
+    background: rgba(255,255,255,0.4);
+    border: 1px solid rgba(45,37,128,0.15);
+    backdrop-filter: blur(8px);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    color: #2D2580;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #5B52D8;
+    box-shadow: 0 0 8px #5B52D8;
+  }
+
+  h1.hero-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: #0D0B1F;
+    max-width: 14ch;
+    margin: 0 auto 16px;
+  }
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(13,11,31,0.65);
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.5;
+  }
+
+  /* ─── BILL + HAND STAGE ─── */
+  .stage {
+    position: relative;
+    margin-top: 24px;
+    height: 460px;
+    overflow: hidden;
+  }
+
+  /* Faded WAVES wordmark behind hand */
+  .wordmark {
+    position: absolute;
+    bottom: 8%;
+    left: 50%; transform: translateX(-50%);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(4rem, 12vw, 11rem);
+    letter-spacing: -0.02em;
+    color: rgba(13,11,31,0.18);
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* The hand silhouette */
+  .hand {
+    position: absolute;
+    left: 50%;
+    bottom: -40px;
+    transform: translateX(-50%);
+    width: 360px;
+    height: 460px;
+    z-index: 3;
+    filter: drop-shadow(0 -8px 24px rgba(13,11,31,0.4));
+  }
+
+  /* The bill held by the hand */
+  .bill {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%) rotate(-6deg);
+    width: 320px;
+    z-index: 4;
+    filter:
+      drop-shadow(0 18px 36px rgba(13,11,31,0.45))
+      drop-shadow(0 6px 12px rgba(13,11,31,0.3));
+    animation: float-bill 6s ease-in-out infinite;
+  }
+  @keyframes float-bill {
+    0%, 100% { transform: translateX(-50%) rotate(-6deg) translateY(0); }
+    50%      { transform: translateX(-50%) rotate(-5deg) translateY(-8px); }
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .hero-frame { border-radius: 20px; min-height: calc(100vh - 24px); }
+    .nav { padding: 18px 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 24px 16px 0; }
+    .stage { height: 360px; margin-top: 8px; }
+    .hand { width: 260px; height: 360px; bottom: -30px; }
+    .bill { width: 220px; top: 20px; }
+    .wordmark { font-size: 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-tag">Mockup A — Avalon Faithful</div>
+
+<section class="hero-frame">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#" class="brand">
+      <span class="brand-mark">W</span>
+      <span class="brand-name">
+        Waves
+        <small>Financial</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="#">Borrow</a>
+      <a href="#">How It Works</a>
+      <a href="#">FAQ</a>
+      <a href="#">About</a>
+    </div>
+    <a href="#" class="nav-cta">Apply Now →</a>
+  </nav>
+
+  <!-- HERO CONTENT -->
+  <div class="hero-content">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      Fast Cash · Up to $1,000 · No Credit Check
+    </div>
+    <h1 class="hero-title">
+      Cash when you need it,<br>without the wait.
+    </h1>
+    <p class="hero-sub">
+      e-Transfer in minutes. 100% online. Licensed Canadian lender.
+    </p>
+  </div>
+
+  <!-- HAND + BILL STAGE -->
+  <div class="stage">
+    <div class="wordmark">WAVES</div>
+
+    <!-- BILL: stylized Canadian $20 polymer note -->
+    <svg class="bill" viewBox="0 0 320 145" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="billA" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%"  stop-color="#A8D5B5"/>
+          <stop offset="35%" stop-color="#7FB28C"/>
+          <stop offset="70%" stop-color="#5C9670"/>
+          <stop offset="100%" stop-color="#3F7A55"/>
+        </linearGradient>
+        <linearGradient id="billHighlightA" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </linearGradient>
+        <pattern id="guillocheA" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="7" cy="7" r="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.4"/>
+          <circle cx="0" cy="0" r="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.4"/>
+          <circle cx="14" cy="14" r="6" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.4"/>
+        </pattern>
+        <radialGradient id="cameoA" cx="0.5" cy="0.45" r="0.6">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
+          <stop offset="60%" stop-color="rgba(255,255,255,0.15)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Bill body -->
+      <rect x="0" y="0" width="320" height="145" rx="6" fill="url(#billA)"/>
+      <!-- Guilloche pattern overlay -->
+      <rect x="0" y="0" width="320" height="145" rx="6" fill="url(#guillocheA)"/>
+      <!-- Top sheen -->
+      <rect x="0" y="0" width="320" height="60" rx="6" fill="url(#billHighlightA)"/>
+
+      <!-- Polymer transparent strip (right side) -->
+      <rect x="244" y="6" width="22" height="133" rx="2"
+            fill="rgba(180,220,200,0.22)" stroke="rgba(255,255,255,0.18)" stroke-width="0.5"/>
+      <!-- Decorative metallic elements in strip -->
+      <circle cx="255" cy="30"  r="5" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.6"/>
+      <circle cx="255" cy="30"  r="3" fill="rgba(255,255,255,0.25)"/>
+      <path d="M255 55 l3 5 l-3 5 l-3 -5 z" fill="rgba(255,255,255,0.35)"/>
+      <path d="M255 75 l3 5 l-3 5 l-3 -5 z" fill="rgba(255,255,255,0.35)"/>
+      <circle cx="255" cy="105" r="5" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.6"/>
+      <text x="255" y="128" text-anchor="middle"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="700"
+            font-size="9" fill="rgba(255,255,255,0.55)">20</text>
+
+      <!-- Cameo / portrait silhouette (generic, no real person) -->
+      <ellipse cx="190" cy="72" rx="34" ry="44"
+               fill="rgba(255,255,255,0.18)"
+               stroke="rgba(255,255,255,0.35)" stroke-width="0.8"/>
+      <ellipse cx="190" cy="72" rx="34" ry="44" fill="url(#cameoA)"/>
+      <!-- Abstract head/shoulders silhouette inside cameo -->
+      <g opacity="0.4">
+        <circle cx="190" cy="62" r="11" fill="#2A4D38"/>
+        <path d="M170 110 Q190 80 210 110 Z" fill="#2A4D38"/>
+      </g>
+      <!-- Cameo decorative ring -->
+      <ellipse cx="190" cy="72" rx="38" ry="48"
+               fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.4" stroke-dasharray="2 2"/>
+
+      <!-- Big "20" left side -->
+      <text x="22" y="108"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="800"
+            font-size="74" fill="rgba(255,255,255,0.95)"
+            letter-spacing="-3">20</text>
+      <!-- "$" prefix -->
+      <text x="22" y="62"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="700"
+            font-size="22" fill="rgba(255,255,255,0.85)">$</text>
+
+      <!-- "CANADA" wordmark -->
+      <text x="22" y="38"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="700"
+            font-size="11" fill="rgba(255,255,255,0.85)"
+            letter-spacing="2">CANADA</text>
+
+      <!-- Maple leaf (top right) -->
+      <g transform="translate(218, 14) scale(0.9)" fill="rgba(255,255,255,0.85)">
+        <path d="M10 0 L11.6 4.5 L16 3.2 L13.5 7 L18 8 L14 10.5 L16.5 14 L11.6 13 L11 18 L10 15.2 L9 18 L8.4 13 L3.5 14 L6 10.5 L2 8 L6.5 7 L4 3.2 L8.4 4.5 Z"/>
+      </g>
+
+      <!-- Small "20" bottom right corner -->
+      <text x="278" y="26"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="800"
+            font-size="14" fill="rgba(255,255,255,0.85)">20</text>
+
+      <!-- Decorative serial-style line -->
+      <text x="22" y="132"
+            font-family="Plus Jakarta Sans, sans-serif" font-weight="500"
+            font-size="6" fill="rgba(255,255,255,0.6)" letter-spacing="1">
+        TWENTY DOLLARS · VINGT DOLLARS
+      </text>
+
+      <!-- Subtle border -->
+      <rect x="0" y="0" width="320" height="145" rx="6"
+            fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1"/>
+    </svg>
+
+    <!-- HAND silhouette reaching from below -->
+    <svg class="hand" viewBox="0 0 360 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <defs>
+        <linearGradient id="handGradA" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1A0F2E"/>
+          <stop offset="40%" stop-color="#0D0820"/>
+          <stop offset="100%" stop-color="#000000"/>
+        </linearGradient>
+        <radialGradient id="handGlow" cx="0.5" cy="0.2" r="0.6">
+          <stop offset="0%" stop-color="rgba(123,116,240,0.4)"/>
+          <stop offset="100%" stop-color="rgba(123,116,240,0)"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Soft ambient glow behind the hand -->
+      <ellipse cx="180" cy="80" rx="170" ry="60" fill="url(#handGlow)" opacity="0.7"/>
+
+      <!-- Forearm rising from below -->
+      <path d="M 100 460
+               L 80 360
+               Q 70 280 100 220
+               Q 130 175 165 145
+               Q 175 138 195 138
+               Q 225 138 250 165
+               Q 270 188 280 220
+               Q 305 280 290 360
+               L 270 460 Z"
+            fill="url(#handGradA)"/>
+
+      <!-- Thumb (reaching up at front, holding the bill) -->
+      <path d="M 130 175
+               Q 120 130 140 95
+               Q 160 70 175 75
+               Q 188 80 188 105
+               Q 188 130 175 155
+               Q 165 175 150 178 Z"
+            fill="url(#handGradA)"/>
+
+      <!-- Index finger tip peeking behind bill on right -->
+      <path d="M 230 150
+               Q 235 110 245 95
+               Q 255 85 265 95
+               Q 270 110 265 140
+               Q 260 165 245 170 Z"
+            fill="url(#handGradA)"/>
+
+      <!-- Knuckle ridge highlight -->
+      <path d="M 110 230
+               Q 180 215 270 230"
+            fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+    </svg>
+  </div>
+
+</section>
+
+</body>
+</html>
