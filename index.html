@@ -156,7 +156,7 @@
   .hero {
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex; flex-direction: column; justify-content: space-between;
+    display: flex; flex-direction: column; justify-content: center;
     padding: 110px 0 96px;
     position: relative;
     background-image: url('/hero-bg-v2.jpeg');
@@ -172,8 +172,8 @@
     .hero { background-image: url('/hero-bg-v2-mobile.webp'); background-position: center top; }
   }
 
-  /* Two-end gradient: dark at top (headline plate), clear in middle (bills shine),
-     dark at bottom (subtitle/CTA/trust-strip plate). */
+  /* Default (stacked / mobile / tablet): two-end vertical gradient — dark
+     top for headline, clear middle for bills, dark bottom for CTAs. */
   .hero::before {
     content: '';
     position: absolute; inset: 0; z-index: 0;
@@ -187,7 +187,6 @@
         rgba(13,11,31,0.85) 88%,
         rgba(13,11,31,0.96) 100%);
   }
-  /* Subtle nav-area fade on top of the gradient for extra legibility */
   .hero::after {
     content: '';
     position: absolute; inset: 0; z-index: 0;
@@ -195,10 +194,65 @@
     background: linear-gradient(180deg, rgba(13,11,31,0.35) 0%, transparent 8%);
   }
 
-  .hero .container { position: relative; z-index: 1; }
-  .hero-grid {
+  /* Hero content wrapper — flex column on mobile, 3-col grid on desktop */
+  .hero-content {
+    position: relative; z-index: 1;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex; flex-direction: column;
+    gap: 32px;
     text-align: center;
   }
+  .hero-left, .hero-right { width: 100%; }
+
+  /* Desktop: 3-column with bills in the middle */
+  @media (min-width: 1024px) {
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      align-items: center;
+      gap: 32px;
+    }
+    .hero-left {
+      grid-column: 1;
+      text-align: right;
+      padding-right: 8px;
+    }
+    .hero-right {
+      grid-column: 3;
+      text-align: left;
+      padding-left: 8px;
+    }
+    .hero-right .hero-actions { justify-content: flex-start; }
+    .hero-right .hero-subtitle { margin-left: 0; margin-right: auto; }
+
+    /* Flip gradient: dark sides, clear middle (bills shine through) */
+    .hero::before {
+      background:
+        linear-gradient(90deg,
+          rgba(13,11,31,0.62) 0%,
+          rgba(13,11,31,0.40) 18%,
+          rgba(13,11,31,0.00) 32%,
+          rgba(13,11,31,0.00) 68%,
+          rgba(13,11,31,0.40) 82%,
+          rgba(13,11,31,0.62) 100%);
+    }
+    /* ::after handles vertical accents — small nav fade + bottom anchor */
+    .hero::after {
+      background:
+        linear-gradient(180deg,
+          rgba(13,11,31,0.40) 0%,
+          transparent 8%,
+          transparent 78%,
+          rgba(13,11,31,0.55) 95%,
+          rgba(13,11,31,0.85) 100%);
+    }
+  }
+
+  /* Legacy alias — some old code may reference .hero-grid; keep harmless rule */
+  .hero-grid { text-align: center; }
 
   /* Staggered entrance — each line drifts up & fades in */
   .hero-fade { opacity: 0; transform: translateY(14px); animation: hero-rise 0.9s cubic-bezier(0.2,0.7,0.2,1) forwards; }
@@ -1604,18 +1658,17 @@
 <main id="main-content">
 <section class="hero">
 
-  <!-- TOP: headline floats in the upper sky, above the bills -->
-  <div class="container">
-    <div class="hero-grid">
-      <h1 class="hero-title hero-fade d1">
+  <div class="hero-content">
+
+    <!-- LEFT BOX: headline anchored toward the bills -->
+    <div class="hero-left hero-fade d1">
+      <h1 class="hero-title">
         Cash when you need it, <span class="line-accent">without the wait.</span>
       </h1>
     </div>
-  </div>
 
-  <!-- BOTTOM: supporting copy + CTAs, anchored above the trust strip -->
-  <div class="container">
-    <div class="hero-grid">
+    <!-- RIGHT BOX: supporting copy + CTAs -->
+    <div class="hero-right">
       <p class="hero-subtitle hero-fade d2">
         <strong>No credit check.</strong> No paperwork. Apply in 5 minutes — funds land in your account by Interac e-Transfer.
       </p>
@@ -1629,6 +1682,7 @@
         </a>
       </div>
     </div>
+
   </div>
 
   <div class="trust-strip hero-fade d4">
