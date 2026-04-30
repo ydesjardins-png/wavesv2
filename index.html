@@ -198,15 +198,17 @@
   .hero-grid { text-align: center; }
 
   /* MIDDLE FLANK ROW — two glass pills flanking the bills.
-     justify-content: space-between pushes them to opposite edges,
-     leaving the bills visually centered between them. */
+     justify-content: center with a viewport-tracking gap. The gap roughly
+     matches the bills' rendered width, so the pills' inner edges kiss the
+     hand+bills on both sides at any common desktop viewport — and the
+     whole row stays centered, in the same visual column as the CTAs below. */
   .hero-flank-row {
     position: relative; z-index: 1;
     width: 100%; max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 24px;
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(360px, 30vw, 720px);
   }
   .hero-flank-pill {
     flex: 0 1 260px;
