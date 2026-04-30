@@ -156,7 +156,7 @@
   .hero {
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex; flex-direction: column; justify-content: center;
+    display: flex; flex-direction: column; justify-content: space-between;
     padding: 110px 0 96px;
     position: relative;
     background-image: url('/hero-bg-v2.jpeg');
@@ -172,8 +172,8 @@
     .hero { background-image: url('/hero-bg-v2-mobile.webp'); background-position: center top; }
   }
 
-  /* Default (stacked / mobile / tablet): two-end vertical gradient — dark
-     top for headline, clear middle for bills, dark bottom for CTAs. */
+  /* Vertical gradient — dark at top (headline plate), clear in middle
+     (bills shine), dark at bottom (CTAs + trust strip plate). */
   .hero::before {
     content: '';
     position: absolute; inset: 0; z-index: 0;
@@ -194,65 +194,49 @@
     background: linear-gradient(180deg, rgba(13,11,31,0.35) 0%, transparent 8%);
   }
 
-  /* Hero content wrapper — flex column on mobile, 3-col grid on desktop */
-  .hero-content {
+  .hero .container { position: relative; z-index: 1; }
+  .hero-grid { text-align: center; }
+
+  /* MIDDLE FLANK ROW — two glass pills flanking the bills.
+     justify-content: space-between pushes them to opposite edges,
+     leaving the bills visually centered between them. */
+  .hero-flank-row {
     position: relative; z-index: 1;
-    width: 100%;
-    max-width: 1280px;
+    width: 100%; max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
-    display: flex; flex-direction: column;
-    gap: 32px;
-    text-align: center;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
   }
-  .hero-left, .hero-right { width: 100%; }
+  .hero-flank-pill {
+    flex: 0 1 260px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    background: rgba(13,11,31,0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.10);
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.92);
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(13,11,31,0.4);
+  }
+  .hero-flank-pill strong { color: var(--white); font-weight: 700; }
+  .hero-flank-pill.right { text-align: left; }
 
-  /* Desktop: 3-column with bills in the middle */
-  @media (min-width: 1024px) {
-    .hero-content {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr 1fr;
+  @media (max-width: 1023px) {
+    .hero-flank-row {
+      flex-direction: column;
       align-items: center;
-      gap: 32px;
+      gap: 14px;
     }
-    .hero-left {
-      grid-column: 1;
-      text-align: right;
-      padding-right: 8px;
-    }
-    .hero-right {
-      grid-column: 3;
-      text-align: left;
-      padding-left: 8px;
-    }
-    .hero-right .hero-actions { justify-content: flex-start; }
-    .hero-right .hero-subtitle { margin-left: 0; margin-right: auto; }
-
-    /* Flip gradient: dark sides, clear middle (bills shine through) */
-    .hero::before {
-      background:
-        linear-gradient(90deg,
-          rgba(13,11,31,0.62) 0%,
-          rgba(13,11,31,0.40) 18%,
-          rgba(13,11,31,0.00) 32%,
-          rgba(13,11,31,0.00) 68%,
-          rgba(13,11,31,0.40) 82%,
-          rgba(13,11,31,0.62) 100%);
-    }
-    /* ::after handles vertical accents — small nav fade + bottom anchor */
-    .hero::after {
-      background:
-        linear-gradient(180deg,
-          rgba(13,11,31,0.40) 0%,
-          transparent 8%,
-          transparent 78%,
-          rgba(13,11,31,0.55) 95%,
-          rgba(13,11,31,0.85) 100%);
+    .hero-flank-pill {
+      flex: 0 0 auto;
+      max-width: 420px; width: 100%;
+      text-align: center;
     }
   }
-
-  /* Legacy alias — some old code may reference .hero-grid; keep harmless rule */
-  .hero-grid { text-align: center; }
 
   /* Staggered entrance — each line drifts up & fades in */
   .hero-fade { opacity: 0; transform: translateY(14px); animation: hero-rise 0.9s cubic-bezier(0.2,0.7,0.2,1) forwards; }
@@ -260,6 +244,7 @@
   .hero-fade.d2 { animation-delay: 0.24s; }
   .hero-fade.d3 { animation-delay: 0.38s; }
   .hero-fade.d4 { animation-delay: 0.52s; }
+  .hero-fade.d5 { animation-delay: 0.66s; }
   @keyframes hero-rise {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -1658,22 +1643,30 @@
 <main id="main-content">
 <section class="hero">
 
-  <div class="hero-content">
-
-    <!-- LEFT BOX: headline anchored toward the bills -->
-    <div class="hero-left hero-fade d1">
-      <h1 class="hero-title">
+  <!-- TOP: headline floats in the upper sky, above the bills -->
+  <div class="container">
+    <div class="hero-grid">
+      <h1 class="hero-title hero-fade d1">
         Cash when you need it, <span class="line-accent">without the wait.</span>
       </h1>
     </div>
+  </div>
 
-    <!-- RIGHT BOX: supporting copy + CTAs -->
-    <div class="hero-right">
-      <p class="hero-subtitle hero-fade d2">
-        <strong>No credit check.</strong> No paperwork. Apply in 5 minutes — funds land in your account by Interac e-Transfer.
-      </p>
+  <!-- MIDDLE: two glass pills flanking the bills -->
+  <div class="hero-flank-row">
+    <div class="hero-flank-pill hero-fade d2">
+      <strong>No credit check.</strong><br>
+      No paperwork.
+    </div>
+    <div class="hero-flank-pill right hero-fade d3">
+      Apply in 5 minutes — funds land in your account by Interac e-Transfer.
+    </div>
+  </div>
 
-      <div class="hero-actions hero-fade d3">
+  <!-- BOTTOM: CTAs anchored above the trust strip -->
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-actions hero-fade d4">
         <a href="apply.html" class="btn-hero-primary">
           Apply Now <span class="arrow">→</span>
         </a>
@@ -1682,10 +1675,9 @@
         </a>
       </div>
     </div>
-
   </div>
 
-  <div class="trust-strip hero-fade d4">
+  <div class="trust-strip hero-fade d5">
     <div class="trust-strip-item">
       <span class="trust-strip-num"><span class="stars-inline">★</span>4.9</span>
       <span class="trust-strip-label">Google Reviews</span>
