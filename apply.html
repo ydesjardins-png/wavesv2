@@ -1871,14 +1871,30 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,11,31,0.9
 </main>
 
 <script>
-const WEBHOOK_NEW     = 'https://web-production-31ce.up.railway.app/api/apply/new';
-const WEBHOOK_RENEWAL = 'https://web-production-31ce.up.railway.app/api/apply/renewal';
+// ═══════════════════════════════════════════════════════════════════════════
+// BACKEND CONFIGURATION
+// ─────────────────────────────────────────────────────────────────────────
+// This form needs a backend API to (1) submit applications, (2) load dynamic
+// loan/fee/payment-method config, and (3) provide a Flinks IBV iframe URL.
+//
+// HOW TO WIRE UP A NEW BACKEND
+//   1. Set BACKEND_URL below to your API base URL — no trailing slash.
+//      Example:  const BACKEND_URL = 'https://api.wavesfinancial.ca';
+//   2. Set IS_SANDBOX_FORM to false to enable live submissions.
+//   3. Make sure your backend exposes the endpoints listed in
+//      /_saved/backend-contract.md
+//
+// While BACKEND_URL is empty OR IS_SANDBOX_FORM is true, the form renders
+// and validates normally, but submissions show the "under review" screen
+// without hitting any backend (safe to deploy publicly).
+// ═══════════════════════════════════════════════════════════════════════════
+const BACKEND_URL     = '';   // ← Set this when the new backend is ready
+const IS_SANDBOX_FORM = true; // ← Flip to false once BACKEND_URL is live
 
-// ── SANDBOX MODE ──────────────────────────────────────────────────────────────
-// Set to false when you have real Flinks credentials and are ready for live traffic.
-// In sandbox mode: forms show dummy fill button, submission shows under-review screen
-// without calling the backend.
-const IS_SANDBOX_FORM = false; // live mode — submissions go to Railway backend
+// Derived endpoint URLs — do not edit
+const WEBHOOK_NEW     = BACKEND_URL ? BACKEND_URL + '/api/apply/new'     : '';
+const WEBHOOK_RENEWAL = BACKEND_URL ? BACKEND_URL + '/api/apply/renewal' : '';
+const RAILWAY_URL     = BACKEND_URL; // legacy alias used by config & IBV fetches below
 
 // ── TESTING AIDS — remove before opening to real applicants ───────────────────
 // Pre-check all checkboxes on every load (speeds up testing)
@@ -2700,7 +2716,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ─── IBV ROUTING (Flinks ↔ VoPay iQ11) ──────────────────────────────────────
-const RAILWAY_URL = 'https://web-production-31ce.up.railway.app';
+// RAILWAY_URL is defined at the top of this script (derived from BACKEND_URL).
 
 async function loadIBV(funnel) {
   try {
