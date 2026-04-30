@@ -2089,6 +2089,7 @@ let MAX_LOAN = 1000;
 let PAD_CUTOFF = '2:30 PM EST';
 
 async function loadLoanSettings() {
+  if (!BACKEND_URL) return; // sandbox mode — keep hardcoded defaults
   try {
     const res  = await fetch(RAILWAY_URL + '/api/config/loan-settings');
     const data = await res.json();
@@ -2520,6 +2521,7 @@ function syncContractSummary() {
 let _optionalFees = null;
 
 async function loadOptionalFees() {
+  if (!BACKEND_URL) { _optionalFees = []; return; } // sandbox mode
   try {
     const res  = await fetch(RAILWAY_URL + '/api/config/optional-fees');
     const data = await res.json();
@@ -2625,6 +2627,7 @@ function getOptionalFeesSelected(funnel) {
 let _paymentMethods = null; // null = not loaded yet
 
 async function loadPaymentMethods() {
+  if (!BACKEND_URL) return; // sandbox mode — keep static HTML defaults
   try {
     const res  = await fetch(RAILWAY_URL + '/api/config/payment-methods');
     const data = await res.json();
@@ -2719,6 +2722,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // RAILWAY_URL is defined at the top of this script (derived from BACKEND_URL).
 
 async function loadIBV(funnel) {
+  if (!BACKEND_URL) return; // sandbox mode — keep static "Instant Bank Verification" placeholder box
   try {
     const res = await fetch(RAILWAY_URL + '/api/ibv/embed-url');
     const cfg = await res.json();
