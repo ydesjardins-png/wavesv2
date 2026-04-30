@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup 3 — Bottom-Anchored — Waves Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --deep:#0D0B1F; --teal:#1DE9C6; --cyan:#00E5FF; --lavender:#7B74F0;
+    --periwinkle:#A09AF5; --gold:#FFD166; --white:#FFFFFF; --off-white:#F4F3FF;
+    --font-display:'Plus Jakarta Sans',sans-serif; --font-body:'DM Sans',sans-serif;
+  }
+  html, body { height: 100%; }
+  body { font-family: var(--font-body); background: var(--deep); color: var(--white); overflow-x: hidden; }
+
+  .mockup-tag {
+    position: fixed; top: 12px; right: 12px; z-index: 100;
+    background: rgba(13,11,31,0.85); color: #fff;
+    padding: 6px 12px; border-radius: 100px;
+    font-family: var(--font-display); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* fake nav */
+  .nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(13,11,31,0.5); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; }
+  .brand-mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--lavender), var(--cyan)); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; }
+  .nav-cta { padding: 9px 18px; border-radius: 100px; background: linear-gradient(135deg, var(--lavender), var(--cyan)); color: var(--deep); font-weight: 700; text-decoration: none; font-family: var(--font-display); font-size: 0.88rem; }
+
+  /* HERO — Mockup 3: bottom-anchored. Bills + sunset are the upper spectacle.
+     Content sits at bottom over a dark gradient. */
+  .hero {
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0;
+    position: relative;
+    background-image: url('/hero-bg-v2.jpeg');
+    background-size: cover;
+    /* Push image UP so bills sit higher in viewport, more bottom space for content */
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+  /* Strong bottom-up gradient — dark at bottom 45% of hero, transparent above */
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background:
+      linear-gradient(180deg,
+        rgba(13,11,31,0.00) 0%,
+        rgba(13,11,31,0.00) 35%,
+        rgba(13,11,31,0.50) 55%,
+        rgba(13,11,31,0.85) 78%,
+        rgba(13,11,31,0.96) 100%);
+  }
+  /* Subtle top-fade for nav legibility */
+  .hero::after {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(13,11,31,0.55) 0%, transparent 18%);
+  }
+
+  /* Floating eyebrow at TOP — establishes legitimacy without overlapping bills */
+  .hero-eyebrow-top {
+    position: absolute; top: 96px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 18px; border-radius: 100px;
+    background: rgba(91,82,216,0.32);
+    border: 1px solid rgba(160,154,245,0.4);
+    backdrop-filter: blur(14px);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+    color: var(--off-white); text-transform: uppercase;
+    font-family: var(--font-display);
+    box-shadow: 0 8px 24px rgba(13,11,31,0.4);
+  }
+  .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; transform: scale(1); } 50% { opacity:0.5; transform: scale(0.8); } }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; width: 100%; }
+
+  .hero-content {
+    padding-bottom: 48px;
+    max-width: 760px;
+  }
+
+  /* Big headline at bottom-left */
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 5.4vw, 4.4rem);
+    font-weight: 800; line-height: 1.02;
+    letter-spacing: -0.035em; margin-bottom: 22px;
+    text-shadow: 0 2px 24px rgba(13,11,31,0.6);
+  }
+  .hero-title .line-accent {
+    background: linear-gradient(96deg, var(--teal) 0%, var(--cyan) 55%, var(--lavender) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.08rem; color: rgba(255,255,255,0.88);
+    line-height: 1.55; margin-bottom: 28px; max-width: 540px;
+    text-shadow: 0 1px 10px rgba(13,11,31,0.6);
+  }
+  .hero-subtitle strong { color: var(--white); font-weight: 700; }
+
+  .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .btn-hero-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 28px; border-radius: 100px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--cyan) 100%);
+    color: var(--deep); font-family: var(--font-display);
+    font-weight: 700; font-size: 1rem; text-decoration: none;
+    box-shadow: 0 12px 32px rgba(0,229,255,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .btn-hero-ghost {
+    padding: 15px 24px; border-radius: 100px;
+    background: rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--white); font-family: var(--font-display);
+    font-weight: 600; font-size: 0.98rem; text-decoration: none;
+  }
+
+  /* Trust strip: full-width horizontal stripe at very bottom */
+  .trust-strip {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    gap: 36px;
+    padding: 18px 32px;
+    background: rgba(13,11,31,0.7);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .trust-strip-item { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); }
+  .trust-strip-num { font-size: 1.05rem; font-weight: 800; }
+  .trust-strip-num.gradient { background: linear-gradient(135deg, var(--white), var(--periwinkle)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .trust-strip-num .stars-inline { color: var(--gold); font-size: 0.95rem; margin-right: 4px; }
+  .trust-strip-label { font-size: 0.78rem; color: rgba(255,255,255,0.7); font-weight: 500; font-family: var(--font-body); }
+  .trust-strip-sep { width: 1px; height: 24px; background: rgba(255,255,255,0.14); }
+
+  @media (max-width: 768px) {
+    .nav { padding: 14px 20px; }
+    .nav-cta { padding: 7px 14px; font-size: 0.82rem; }
+    .container { padding: 0 20px; }
+    .hero {
+      background-image: url('/hero-bg-v2-mobile.webp');
+      background-position: center 25%;
+    }
+    .hero-eyebrow-top { top: 80px; font-size: 0.66rem; padding: 6px 14px; letter-spacing: 0.12em; }
+    .hero-content { padding-bottom: 32px; }
+    .hero-subtitle { font-size: 1rem; }
+    .trust-strip { gap: 14px; padding: 14px 20px; flex-wrap: wrap; }
+    .trust-strip-num { font-size: 0.95rem; }
+    .trust-strip-label { font-size: 0.7rem; }
+    .trust-strip-sep { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-tag">Mockup 3 · Bottom-Anchored</div>
+
+<nav class="nav">
+  <a href="#" class="brand"><span class="brand-mark">W</span> Waves Financial</a>
+  <a href="#" class="nav-cta">Get a Loan →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow-top">
+    <span class="eyebrow-dot"></span> Licensed Canadian Lender
+  </div>
+
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Up to $1,000,<br>
+        <span class="line-accent">e-Transferred in 2 minutes.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        <strong>No credit check.</strong> No paperwork. Apply in 5 minutes — funds land in your account by Interac e-Transfer.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#" class="btn-hero-primary">Apply Now <span>→</span></a>
+        <a href="#" class="btn-hero-ghost">How It Works</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-strip">
+    <div class="trust-strip-item">
+      <span class="trust-strip-num"><span class="stars-inline">★</span>4.9</span>
+      <span class="trust-strip-label">Google Reviews</span>
+    </div>
+    <div class="trust-strip-sep"></div>
+    <div class="trust-strip-item">
+      <span class="trust-strip-num gradient">50,000+</span>
+      <span class="trust-strip-label">Canadians Helped</span>
+    </div>
+    <div class="trust-strip-sep"></div>
+    <div class="trust-strip-item">
+      <span class="trust-strip-num">2 min</span>
+      <span class="trust-strip-label">Avg. e-Transfer</span>
+    </div>
+    <div class="trust-strip-sep"></div>
+    <div class="trust-strip-item">
+      <span class="trust-strip-num">🔒</span>
+      <span class="trust-strip-label">Bank-level Security</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

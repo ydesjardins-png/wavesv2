@@ -12,25 +12,28 @@
     background: #0D0B1F;
     color: #fff;
     min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 40px 20px;
+    padding: 60px 20px 80px;
   }
-  .wrap { max-width: 720px; width: 100%; }
+  .wrap { max-width: 720px; width: 100%; margin: 0 auto; }
   h1 {
     font-size: 2.2rem; font-weight: 800;
     background: linear-gradient(135deg, #fff, #A09AF5);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
+    margin-bottom: 12px; letter-spacing: -0.02em;
   }
-  .lede { color: #9B97C5; margin-bottom: 32px; font-size: 1rem; line-height: 1.6; }
-  .grid { display: grid; gap: 16px; }
+  h2 {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: #1DE9C6;
+    margin: 40px 0 16px;
+  }
+  .lede { color: #9B97C5; margin-bottom: 24px; font-size: 1rem; line-height: 1.6; }
+  .grid { display: grid; gap: 14px; }
   a.card {
     display: block;
-    padding: 24px 28px;
+    padding: 22px 26px;
     background: rgba(91,82,216,0.12);
     border: 1px solid rgba(160,154,245,0.25);
-    border-radius: 16px;
+    border-radius: 14px;
     color: #fff;
     text-decoration: none;
     transition: all 0.2s;
@@ -40,43 +43,71 @@
     background: rgba(91,82,216,0.2);
     transform: translateY(-2px);
   }
-  .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
-  .card-desc { color: #9B97C5; font-size: 0.92rem; line-height: 1.5; }
+  a.card.featured { border-color: rgba(29,233,198,0.45); background: rgba(29,233,198,0.08); }
+  a.card.featured::before { content: '★ Recommended'; display: block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; color: #1DE9C6; margin-bottom: 8px; }
+  .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+  .card-desc { color: #9B97C5; font-size: 0.9rem; line-height: 1.5; }
+  .card-meta { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 100px; background: rgba(91,82,216,0.2); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; color: #A09AF5; text-transform: uppercase; }
   .card-arrow { float: right; color: #1DE9C6; }
-  .footer { margin-top: 40px; font-size: 0.85rem; color: #6B6890; line-height: 1.6; }
-  .footer code {
-    background: rgba(91,82,216,0.2); padding: 2px 6px;
-    border-radius: 4px; font-size: 0.85em;
-  }
+  .footer { margin-top: 50px; font-size: 0.85rem; color: #6B6890; line-height: 1.6; padding-top: 24px; border-top: 1px solid rgba(160,154,245,0.15); }
+  .footer code { background: rgba(91,82,216,0.2); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .footer a { color: #A09AF5; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Hero Mockups</h1>
   <p class="lede">
-    Two takes on a new hero inspired by the Avalon Labs reference. Both keep the existing headline copy and feature a stylized Canadian $20 bill in place of the coin. Open each on desktop and on your phone to compare.
+    Iterating on the live hero — pick a fix for the overlap issue, or browse the earlier exploration mockups below.
   </p>
 
+  <h2>Overlap Fixes — Pick One</h2>
+  <div class="grid">
+    <a class="card" href="/_mockups/hero-fix-1-css-only.html">
+      <span class="card-arrow">→</span>
+      <div class="card-title">Mockup 1 — CSS-Only Fix</div>
+      <div class="card-desc">
+        Same image. Content lane capped at 460px. Shorter headline ("Up to $1,000. Cash in 2 minutes."). Stronger left gradient. Modest, safe, fastest.
+      </div>
+      <span class="card-meta">5 min · safe</span>
+    </a>
+
+    <a class="card featured" href="/_mockups/hero-fix-2-extended-image.html">
+      <span class="card-arrow">→</span>
+      <div class="card-title">Mockup 2 — Extended Background</div>
+      <div class="card-desc">
+        Image extended by ~28% on the left with a mirror of the palms — looks like a wider beach panorama. Bills shift to ~63% horizontal. Original headline preserved. Most polished result.
+      </div>
+      <span class="card-meta">10 min · best balance</span>
+    </a>
+
+    <a class="card" href="/_mockups/hero-fix-3-bottom-anchored.html">
+      <span class="card-arrow">→</span>
+      <div class="card-title">Mockup 3 — Bottom-Anchored</div>
+      <div class="card-desc">
+        Eyebrow floats at top center, bills + sky dominate upper viewport, headline + CTAs anchor to bottom-left over a strong dark gradient, full-width trust strip closes the hero. Most cinematic.
+      </div>
+      <span class="card-meta">15 min · cinematic</span>
+    </a>
+  </div>
+
+  <h2>Earlier Exploration</h2>
   <div class="grid">
     <a class="card" href="/_mockups/hero-mockup-a.html">
       <span class="card-arrow">→</span>
       <div class="card-title">Mockup A — Avalon Faithful</div>
-      <div class="card-desc">
-        Pink/violet aurora bleed. Light cloudy interior. Stylized hand reaching up from below holding the bill. Faded "WAVES" wordmark behind. Closest to the reference image.
-      </div>
+      <div class="card-desc">Pink/violet aurora bleed, stylized hand+bill SVG. Pre-Creatify exploration.</div>
     </a>
-
     <a class="card" href="/_mockups/hero-mockup-b.html">
       <span class="card-arrow">→</span>
       <div class="card-title">Mockup B — Waves Aurora</div>
-      <div class="card-desc">
-        Purple + cyan/teal aurora (Waves brand). Bill floats centered with a glow underneath — no hand, more weightless. Subtle wave-curve motion lines and sparkle particles. More on-brand for Waves.
-      </div>
+      <div class="card-desc">Cyan/teal aurora variant, floating bill, sparkle particles. Pre-Creatify exploration.</div>
     </a>
   </div>
 
   <p class="footer">
-    No changes to <code>index.html</code> yet. The calculator block is saved separately at <code>/_saved/hero-calculator.html</code> and can be dropped into any page later.
+    Live site: <a href="/">wavesfinancial.ca</a> &middot;
+    Calculator block saved at <code>/_saved/hero-calculator.html</code>
   </p>
 </div>
 </body>
