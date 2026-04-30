@@ -156,8 +156,8 @@
   .hero {
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex; align-items: flex-end;
-    padding: 120px 0 96px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 110px 0 96px;
     position: relative;
     background-image: url('/hero-bg-v2.jpeg');
     background-size: cover;
@@ -172,25 +172,27 @@
     .hero { background-image: url('/hero-bg-v2-mobile.webp'); background-position: center top; }
   }
 
-  /* Bottom-up gradient: transparent top → dark bottom. Bills + sky breathe
-     above; content sits on a clearly darkened plate at the bottom. */
+  /* Two-end gradient: dark at top (headline plate), clear in middle (bills shine),
+     dark at bottom (subtitle/CTA/trust-strip plate). */
   .hero::before {
     content: '';
     position: absolute; inset: 0; z-index: 0;
     background:
       linear-gradient(180deg,
-        rgba(13,11,31,0.00) 0%,
-        rgba(13,11,31,0.00) 35%,
-        rgba(13,11,31,0.50) 55%,
-        rgba(13,11,31,0.85) 78%,
+        rgba(13,11,31,0.55) 0%,
+        rgba(13,11,31,0.30) 14%,
+        rgba(13,11,31,0.00) 28%,
+        rgba(13,11,31,0.00) 56%,
+        rgba(13,11,31,0.50) 72%,
+        rgba(13,11,31,0.85) 88%,
         rgba(13,11,31,0.96) 100%);
   }
-  /* Subtle top fade so nav stays legible against bright sky */
+  /* Subtle nav-area fade on top of the gradient for extra legibility */
   .hero::after {
     content: '';
     position: absolute; inset: 0; z-index: 0;
     pointer-events: none;
-    background: linear-gradient(180deg, rgba(13,11,31,0.55) 0%, transparent 18%);
+    background: linear-gradient(180deg, rgba(13,11,31,0.35) 0%, transparent 8%);
   }
 
   .hero .container { position: relative; z-index: 1; }
@@ -318,22 +320,24 @@
   /* ─── MOBILE HERO TUNING ─── */
   @media (max-width: 768px) {
     .hero {
-      align-items: flex-start;
-      padding: 96px 0 90px;
+      padding: 90px 0 88px;
       min-height: 100dvh;
     }
-    /* Mobile portrait bg: hand+bills sit in lower portion → content anchors top,
-       dark gradient flips to top-down */
+    /* Mobile: same two-end pattern but tuned for portrait crop where bills
+       sit lower in the frame. Less middle-clear, since the bills extend higher. */
     .hero::before {
       background:
         linear-gradient(180deg,
-          rgba(13,11,31,0.85) 0%,
-          rgba(13,11,31,0.55) 26%,
-          rgba(13,11,31,0.20) 50%,
-          rgba(13,11,31,0.00) 75%);
+          rgba(13,11,31,0.65) 0%,
+          rgba(13,11,31,0.30) 16%,
+          rgba(13,11,31,0.00) 32%,
+          rgba(13,11,31,0.00) 50%,
+          rgba(13,11,31,0.45) 68%,
+          rgba(13,11,31,0.85) 86%,
+          rgba(13,11,31,0.96) 100%);
     }
     .hero::after {
-      background: linear-gradient(180deg, rgba(13,11,31,0.65) 0%, transparent 14%);
+      background: linear-gradient(180deg, rgba(13,11,31,0.45) 0%, transparent 8%);
     }
     .hero-title { margin-bottom: 16px; line-height: 1.08; }
     .hero-subtitle { margin-bottom: 28px; font-size: 1rem; max-width: 100%; }
@@ -1599,28 +1603,31 @@
 <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
 <main id="main-content">
 <section class="hero">
+
+  <!-- TOP: headline floats in the upper sky, above the bills -->
   <div class="container">
     <div class="hero-grid">
+      <h1 class="hero-title hero-fade d1">
+        Cash when you need it, <span class="line-accent">without the wait.</span>
+      </h1>
+    </div>
+  </div>
 
-      <div>
-        <h1 class="hero-title hero-fade d1">
-          Cash when you need it, <span class="line-accent">without the wait.</span>
-        </h1>
+  <!-- BOTTOM: supporting copy + CTAs, anchored above the trust strip -->
+  <div class="container">
+    <div class="hero-grid">
+      <p class="hero-subtitle hero-fade d2">
+        <strong>No credit check.</strong> No paperwork. Apply in 5 minutes — funds land in your account by Interac e-Transfer.
+      </p>
 
-        <p class="hero-subtitle hero-fade d2">
-          <strong>No credit check.</strong> No paperwork. Apply in 5 minutes — funds land in your account by Interac e-Transfer.
-        </p>
-
-        <div class="hero-actions hero-fade d3">
-          <a href="apply.html" class="btn-hero-primary">
-            Apply Now <span class="arrow">→</span>
-          </a>
-          <a href="#how-it-works" class="btn-hero-ghost">
-            How It Works
-          </a>
-        </div>
+      <div class="hero-actions hero-fade d3">
+        <a href="apply.html" class="btn-hero-primary">
+          Apply Now <span class="arrow">→</span>
+        </a>
+        <a href="#how-it-works" class="btn-hero-ghost">
+          How It Works
+        </a>
       </div>
-
     </div>
   </div>
 
