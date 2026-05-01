@@ -223,24 +223,20 @@
        z=3  → ::after subtle top fade
        z=5  → .container with all content
        z=999→ .hero-media-toggle */
-  /* The video lives inside this wrapper. The wrapper is the abs-positioned
-     element; the video is a normal block child sized via 100%/100%. This
-     decouples the <video> from .hero's flex formatting context entirely —
-     even when .hero is display:flex, the wrapper is taken out of flow and
-     the video inside it sees a normal containing block. */
+  /* Wrapper is now a position:fixed layer pinned to the hero's runtime
+     bounding rect via inline styles set in JS. By living OUTSIDE .hero
+     entirely, it cannot inherit any flex layout poison from the hero. */
   .hero-video-wrap {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: 100%; height: 100%;
+    position: fixed;
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.5s ease;
-    /* DEBUG fill */
     background-color: #ff00ff;
   }
-  .hero.video-on .hero-video-wrap { opacity: 1; }
+  .hero.video-on ~ .hero-video-wrap,
+  body.hero-video-on .hero-video-wrap { opacity: 1; }
   .hero-video {
     display: block;
     width: 100%; height: 100%;
@@ -2804,11 +2800,28 @@
 
     let videoEl = null;
     let wrapEl = null;
+    let resizeObs = null;
+
+    // Measure .hero and apply pixel-exact dimensions to the wrapper
+    function syncWrapperToHero() {
+      if (!wrapEl || !hero) return;
+      const r = hero.getBoundingClientRect();
+      wrapEl.style.left   = r.left + 'px';
+      wrapEl.style.top    = r.top + window.scrollY + 'px';
+      wrapEl.style.width  = r.width + 'px';
+      wrapEl.style.height = r.height + 'px';
+      // position:fixed ignores scroll, so for the wrapper to follow the
+      // hero on scroll we use position:absolute when scrolling matters.
+      // But hero is at the very top; with position:fixed pinned to viewport
+      // coords, the video stays put as the user scrolls down — which is
+      // EXACTLY what we want for an immersive hero.
+    }
 
     function ensureVideo() {
       if (videoEl) return videoEl;
 
-      // Wrapper isolates video from .hero's flex formatting context
+      // Wrapper appended to <body>, NOT to .hero. This escapes the flex
+      // formatting context entirely — body is a normal block container.
       wrapEl = document.createElement('div');
       wrapEl.className = 'hero-video-wrap';
       wrapEl.setAttribute('aria-hidden', 'true');
@@ -2823,30 +2836,32 @@
       videoEl.poster = '/hero-video-poster.jpeg';
       videoEl.width = 1920;
       videoEl.height = 1080;
-      // Inline styles: bulletproof against any cascade override
-      videoEl.style.cssText = 'display:block;position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
-      videoEl.src = '/hero-video.mp4?v=7';
+      videoEl.style.cssText = 'display:block;width:100%;height:100%;object-fit:cover;';
+      videoEl.src = '/hero-video.mp4?v=8';
 
-      // Diagnostic event listeners
       const log = (label) => () => console.log(`[hero-video] ${label}`);
       videoEl.addEventListener('loadstart',  log('loadstart'));
       videoEl.addEventListener('loadedmetadata', log('loadedmetadata'));
       videoEl.addEventListener('loadeddata', log('loadeddata'));
       videoEl.addEventListener('canplay',    log('canplay'));
       videoEl.addEventListener('playing',    log('playing'));
-      videoEl.addEventListener('stalled',    log('stalled'));
-      videoEl.addEventListener('suspend',    log('suspend'));
-      videoEl.addEventListener('waiting',    log('waiting'));
       videoEl.addEventListener('error',      () => {
         const e = videoEl.error;
         console.warn('[hero-video] ERROR code', e && e.code, 'message:', e && e.message);
       });
 
       wrapEl.appendChild(videoEl);
-      hero.appendChild(wrapEl);
+      document.body.appendChild(wrapEl);
+
+      syncWrapperToHero();
+      // Observe size changes
+      if (typeof ResizeObserver !== 'undefined') {
+        resizeObs = new ResizeObserver(syncWrapperToHero);
+        resizeObs.observe(hero);
+      }
+      window.addEventListener('resize', syncWrapperToHero);
       videoEl.load();
 
-      // Log wrapper dimensions next frame
       requestAnimationFrame(() => {
         const wr = wrapEl.getBoundingClientRect();
         const vr = videoEl.getBoundingClientRect();
@@ -2867,10 +2882,22 @@
             .catch(err => console.warn('[hero-video] play() rejected:', err.name, err.message));
         }
         hero.classList.add('video-on');
+        document.body.classList.add('hero-video-on');
         toggle.setAttribute('aria-pressed', 'true');
+        // Re-sync wrapper to hero in case toggle was clicked after a resize
+        if (wrapEl) {
+          requestAnimationFrame(() => {
+            const r = hero.getBoundingClientRect();
+            wrapEl.style.left   = r.left + 'px';
+            wrapEl.style.top    = r.top + window.scrollY + 'px';
+            wrapEl.style.width  = r.width + 'px';
+            wrapEl.style.height = r.height + 'px';
+          });
+        }
       } else {
         if (videoEl) videoEl.pause();
         hero.classList.remove('video-on');
+        document.body.classList.remove('hero-video-on');
         toggle.setAttribute('aria-pressed', 'false');
       }
       try { sessionStorage.setItem(STORAGE_KEY, mode); } catch (e) {/* private mode */}
