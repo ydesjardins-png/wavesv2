@@ -176,6 +176,7 @@
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 110px 0 96px;
     position: relative;
+    z-index: 1;
     background-image: url('/hero-bg-v2.jpeg');
     background-size: cover;
     background-position: center 30%;
@@ -227,8 +228,8 @@
      bounding rect via inline styles set in JS. By living OUTSIDE .hero
      entirely, it cannot inherit any flex layout poison from the hero. */
   .hero-video-wrap {
-    position: fixed;
-    z-index: 1;
+    position: absolute;
+    z-index: 0;
     overflow: hidden;
     pointer-events: none;
     opacity: 0;
@@ -241,6 +242,7 @@
     width: 100%; height: 100%;
     object-fit: cover;
   }
+  .hero.video-on { background-image: none !important; background-color: transparent; }
   .hero.video-on::before {
     background:
       linear-gradient(180deg,
@@ -2801,7 +2803,9 @@
     let wrapEl = null;
     let resizeObs = null;
 
-    // Measure .hero and apply pixel-exact dimensions to the wrapper
+    // Measure .hero and apply pixel-exact dimensions to the wrapper.
+    // Using position: absolute (not fixed) so the wrapper scrolls with the
+    // page — naturally disappears once the user scrolls past the hero.
     function syncWrapperToHero() {
       if (!wrapEl || !hero) return;
       const r = hero.getBoundingClientRect();
@@ -2809,11 +2813,6 @@
       wrapEl.style.top    = r.top + window.scrollY + 'px';
       wrapEl.style.width  = r.width + 'px';
       wrapEl.style.height = r.height + 'px';
-      // position:fixed ignores scroll, so for the wrapper to follow the
-      // hero on scroll we use position:absolute when scrolling matters.
-      // But hero is at the very top; with position:fixed pinned to viewport
-      // coords, the video stays put as the user scrolls down — which is
-      // EXACTLY what we want for an immersive hero.
     }
 
     function ensureVideo() {
