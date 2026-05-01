@@ -636,9 +636,65 @@
   .features-section {
     padding: 100px 0;
     position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* Beach photo as base layer */
+    background-image: url('/beach-bg.jpeg');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+  }
+  @supports (background-image: url('/beach-bg.webp')) {
+    .features-section { background-image: url('/beach-bg.webp'); }
+  }
+  @media (max-width: 768px) {
+    .features-section {
+      background-image: url('/beach-bg-mobile.webp');
+      background-position: center top;
+    }
+  }
+  /* Dark veil over the photo so cards read clearly. Two-layer:
+     1) Strong dark wash with a hint of warmth bleeding from the original sunset
+     2) Top + bottom radial vignettes anchor the section into its neighbors */
+  .features-section::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(ellipse 65% 55% at 8% 0%, rgba(0,229,255,0.08) 0%, transparent 55%),
-      radial-gradient(ellipse 70% 60% at 92% 100%, rgba(123,116,240,0.10) 0%, transparent 55%);
+      linear-gradient(180deg,
+        rgba(13,11,31,0.92) 0%,
+        rgba(13,11,31,0.78) 12%,
+        rgba(13,11,31,0.62) 35%,
+        rgba(13,11,31,0.62) 65%,
+        rgba(13,11,31,0.78) 88%,
+        rgba(13,11,31,0.92) 100%),
+      radial-gradient(ellipse 70% 50% at 85% 50%, rgba(232,89,192,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 45% at 15% 50%, rgba(0,229,255,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .features-section > .container { position: relative; z-index: 1; }
+  /* Cards keep their warm-card styling but get a touch more contrast against the photo */
+  .features-section .feature-card {
+    background:
+      var(--card-warm-bg),
+      rgba(13,11,31,0.55);
+    border-color: rgba(232,89,192,0.22);
+  }
+  .features-section .feature-card:hover {
+    background:
+      var(--card-warm-bg-hover),
+      rgba(13,11,31,0.55);
+  }
+  /* Section header gets a subtle backdrop-blur plate so headline pops cleanly */
+  .features-section .section-header {
+    position: relative;
+    z-index: 2;
+  }
+  .features-section .section-eyebrow {
+    color: var(--coral);
+    text-shadow: 0 0 16px rgba(255,126,95,0.5);
+  }
+  .features-section .section-title {
+    text-shadow: 0 2px 24px rgba(13,11,31,0.6);
   }
   .features-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
@@ -1215,9 +1271,65 @@
   .features-section {
     padding: 100px 0;
     position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* Beach photo as base layer */
+    background-image: url('/beach-bg.jpeg');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+  }
+  @supports (background-image: url('/beach-bg.webp')) {
+    .features-section { background-image: url('/beach-bg.webp'); }
+  }
+  @media (max-width: 768px) {
+    .features-section {
+      background-image: url('/beach-bg-mobile.webp');
+      background-position: center top;
+    }
+  }
+  /* Dark veil over the photo so cards read clearly. Two-layer:
+     1) Strong dark wash with a hint of warmth bleeding from the original sunset
+     2) Top + bottom radial vignettes anchor the section into its neighbors */
+  .features-section::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 0;
     background:
-      radial-gradient(ellipse 65% 55% at 8% 0%, rgba(0,229,255,0.08) 0%, transparent 55%),
-      radial-gradient(ellipse 70% 60% at 92% 100%, rgba(123,116,240,0.10) 0%, transparent 55%);
+      linear-gradient(180deg,
+        rgba(13,11,31,0.92) 0%,
+        rgba(13,11,31,0.78) 12%,
+        rgba(13,11,31,0.62) 35%,
+        rgba(13,11,31,0.62) 65%,
+        rgba(13,11,31,0.78) 88%,
+        rgba(13,11,31,0.92) 100%),
+      radial-gradient(ellipse 70% 50% at 85% 50%, rgba(232,89,192,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 45% at 15% 50%, rgba(0,229,255,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .features-section > .container { position: relative; z-index: 1; }
+  /* Cards keep their warm-card styling but get a touch more contrast against the photo */
+  .features-section .feature-card {
+    background:
+      var(--card-warm-bg),
+      rgba(13,11,31,0.55);
+    border-color: rgba(232,89,192,0.22);
+  }
+  .features-section .feature-card:hover {
+    background:
+      var(--card-warm-bg-hover),
+      rgba(13,11,31,0.55);
+  }
+  /* Section header gets a subtle backdrop-blur plate so headline pops cleanly */
+  .features-section .section-header {
+    position: relative;
+    z-index: 2;
+  }
+  .features-section .section-eyebrow {
+    color: var(--coral);
+    text-shadow: 0 0 16px rgba(255,126,95,0.5);
+  }
+  .features-section .section-title {
+    text-shadow: 0 2px 24px rgba(13,11,31,0.6);
   }
   .features-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
