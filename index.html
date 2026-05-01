@@ -760,45 +760,14 @@
   .reviews-trust-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.18); }
   .reviews-trust-meta { font-size: 0.82rem; color: rgba(255,255,255,0.75); }
 
-  /* ── MARQUEE: outer mask gives the soft fade-edge effect ── */
-  .reviews-marquee {
-    position: relative;
-    margin: 0 -24px;  /* bleed past the container so cards don't visually clip */
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-  }
-  .reviews-row {
-    display: flex; gap: 20px;
-    width: max-content;          /* rows are wider than viewport — that's the point */
-    will-change: transform;
-    animation: reviews-scroll 50s linear infinite;
-  }
-  .reviews-row.reverse {
-    animation-direction: reverse;
-    animation-duration: 60s;     /* slightly different speed = depth illusion */
-    margin-top: 20px;
-  }
-  /* Pause when hovering the section so users can read */
-  .reviews-marquee:hover .reviews-row { animation-play-state: paused; }
-  @media (prefers-reduced-motion: reduce) {
-    .reviews-row { animation: none; transform: translateX(0); }
-    .reviews-marquee {
-      -webkit-mask-image: none; mask-image: none;
-      overflow-x: auto;          /* fall back to manual scroll for reduced-motion users */
-      scrollbar-width: thin;
-    }
-  }
-  /* The keyframes shift the row by exactly 50% of its width — because the
-     row contains 2 copies of each card, it loops seamlessly. */
-  @keyframes reviews-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+  /* ── REVIEWS GRID: static 3-column row ── */
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
   }
 
   /* ── REVIEW CARD ── */
   .review-card {
-    flex: 0 0 360px;           /* fixed-width cards work cleanly with translateX */
     background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1149,7 +1118,7 @@
     .hero { padding: 100px 0 120px; }
     .steps-grid { grid-template-columns: 1fr; }
     .step-connector, .step-connector-2 { display: none; }
-    .review-card { flex: 0 0 280px; padding: 22px; }
+    .reviews-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .stats-card { grid-template-columns: repeat(3, 1fr); padding: 36px 24px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -1517,45 +1486,14 @@
   .reviews-trust-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.18); }
   .reviews-trust-meta { font-size: 0.82rem; color: rgba(255,255,255,0.75); }
 
-  /* ── MARQUEE: outer mask gives the soft fade-edge effect ── */
-  .reviews-marquee {
-    position: relative;
-    margin: 0 -24px;  /* bleed past the container so cards don't visually clip */
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-  }
-  .reviews-row {
-    display: flex; gap: 20px;
-    width: max-content;          /* rows are wider than viewport — that's the point */
-    will-change: transform;
-    animation: reviews-scroll 50s linear infinite;
-  }
-  .reviews-row.reverse {
-    animation-direction: reverse;
-    animation-duration: 60s;     /* slightly different speed = depth illusion */
-    margin-top: 20px;
-  }
-  /* Pause when hovering the section so users can read */
-  .reviews-marquee:hover .reviews-row { animation-play-state: paused; }
-  @media (prefers-reduced-motion: reduce) {
-    .reviews-row { animation: none; transform: translateX(0); }
-    .reviews-marquee {
-      -webkit-mask-image: none; mask-image: none;
-      overflow-x: auto;          /* fall back to manual scroll for reduced-motion users */
-      scrollbar-width: thin;
-    }
-  }
-  /* The keyframes shift the row by exactly 50% of its width — because the
-     row contains 2 copies of each card, it loops seamlessly. */
-  @keyframes reviews-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+  /* ── REVIEWS GRID: static 3-column row ── */
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
   }
 
   /* ── REVIEW CARD ── */
   .review-card {
-    flex: 0 0 360px;           /* fixed-width cards work cleanly with translateX */
     background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1906,7 +1844,7 @@
     .hero { padding: 100px 0 120px; }
     .steps-grid { grid-template-columns: 1fr; }
     .step-connector, .step-connector-2 { display: none; }
-    .review-card { flex: 0 0 280px; padding: 22px; }
+    .reviews-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .stats-card { grid-template-columns: repeat(3, 1fr); padding: 36px 24px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -2436,8 +2374,7 @@
       <span class="reviews-trust-meta">based on <strong>50,000+</strong> verified loans</span>
     </div>
 
-    <div class="reviews-marquee" aria-label="Customer reviews carousel">
-      <div class="reviews-row" role="list">
+    <div class="reviews-grid">
       <article class="review-card" aria-label="Review by James M from Toronto">
         <div class="review-meta">
           <span class="review-verified">Verified Customer</span>
@@ -2483,144 +2420,6 @@
           </div>
         </div>
       </article>
-      <article aria-hidden="true" class="review-card" aria-label="Review by James M from Toronto">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">2 days ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"I was skeptical at first, but the process was incredibly smooth. Applied at 9pm and had the money in my account by 9:15pm. Absolutely unreal. Will definitely use again."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-1">JM</div>
-          <div>
-            <div class="reviewer-name">James M.</div>
-            <div class="reviewer-loc">Toronto, ON</div>
-          </div>
-        </div>
-      </article>
-      <article aria-hidden="true" class="review-card" aria-label="Review by Sarah L from Vancouver">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">1 week ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"My car broke down and I needed cash fast. Waves Financial had me approved in under 10 minutes. The flexible repayment options made it easy to budget for. Highly recommend."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-2">SL</div>
-          <div>
-            <div class="reviewer-name">Sarah L.</div>
-            <div class="reviewer-loc">Vancouver, BC</div>
-          </div>
-        </div>
-      </article>
-      <article aria-hidden="true" class="review-card" aria-label="Review by Ryan P from Halifax">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">3 weeks ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"No credit check was a huge deal for me. I've been turned down everywhere else. Waves Financial treated me with respect and got me the money I needed. Thank you!"</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-3">RP</div>
-          <div>
-            <div class="reviewer-name">Ryan P.</div>
-            <div class="reviewer-loc">Halifax, NS</div>
-          </div>
-        </div>
-      </article>
-      </div>
-      <div class="reviews-row reverse" role="list" aria-hidden="true">
-      <article class="review-card" aria-label="Review by Ryan P from Halifax">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">3 weeks ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"No credit check was a huge deal for me. I've been turned down everywhere else. Waves Financial treated me with respect and got me the money I needed. Thank you!"</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-3">RP</div>
-          <div>
-            <div class="reviewer-name">Ryan P.</div>
-            <div class="reviewer-loc">Halifax, NS</div>
-          </div>
-        </div>
-      </article>
-      <article class="review-card" aria-label="Review by James M from Toronto">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">2 days ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"I was skeptical at first, but the process was incredibly smooth. Applied at 9pm and had the money in my account by 9:15pm. Absolutely unreal. Will definitely use again."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-1">JM</div>
-          <div>
-            <div class="reviewer-name">James M.</div>
-            <div class="reviewer-loc">Toronto, ON</div>
-          </div>
-        </div>
-      </article>
-      <article class="review-card" aria-label="Review by Sarah L from Vancouver">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">1 week ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"My car broke down and I needed cash fast. Waves Financial had me approved in under 10 minutes. The flexible repayment options made it easy to budget for. Highly recommend."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-2">SL</div>
-          <div>
-            <div class="reviewer-name">Sarah L.</div>
-            <div class="reviewer-loc">Vancouver, BC</div>
-          </div>
-        </div>
-      </article>
-      <article aria-hidden="true" class="review-card" aria-label="Review by Ryan P from Halifax">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">3 weeks ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"No credit check was a huge deal for me. I've been turned down everywhere else. Waves Financial treated me with respect and got me the money I needed. Thank you!"</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-3">RP</div>
-          <div>
-            <div class="reviewer-name">Ryan P.</div>
-            <div class="reviewer-loc">Halifax, NS</div>
-          </div>
-        </div>
-      </article>
-      <article aria-hidden="true" class="review-card" aria-label="Review by James M from Toronto">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">2 days ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"I was skeptical at first, but the process was incredibly smooth. Applied at 9pm and had the money in my account by 9:15pm. Absolutely unreal. Will definitely use again."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-1">JM</div>
-          <div>
-            <div class="reviewer-name">James M.</div>
-            <div class="reviewer-loc">Toronto, ON</div>
-          </div>
-        </div>
-      </article>
-      <article aria-hidden="true" class="review-card" aria-label="Review by Sarah L from Vancouver">
-        <div class="review-meta">
-          <span class="review-verified">Verified Customer</span>
-          <span class="review-date">1 week ago</span>
-        </div>
-        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <p class="review-text">"My car broke down and I needed cash fast. Waves Financial had me approved in under 10 minutes. The flexible repayment options made it easy to budget for. Highly recommend."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar av-2">SL</div>
-          <div>
-            <div class="reviewer-name">Sarah L.</div>
-            <div class="reviewer-loc">Vancouver, BC</div>
-          </div>
-        </div>
-      </article>
-      </div>
     </div>
   </div>
 </section>
