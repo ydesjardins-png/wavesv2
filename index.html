@@ -2779,7 +2779,6 @@
     if (!hero || !toggle) return;
 
     const STORAGE_KEY = 'waves:hero-media';
-    const VIDEO_SRC = '/hero-video.mp4'; // wired up when the file is uploaded
 
     let videoEl = null;
 
@@ -2792,9 +2791,19 @@
       videoEl.playsInline = true;
       videoEl.autoplay = true;
       videoEl.preload = 'metadata';
+      videoEl.poster = '/hero-video-poster.jpeg';
       videoEl.setAttribute('aria-hidden', 'true');
-      videoEl.src = VIDEO_SRC;
-      // Insert as first child of .hero so it sits behind ::before/::after overlays
+      // Browser picks the first <source> it can decode — WebM first because
+      // it's smaller (~1.1MB vs 1.5MB) and well-supported in Chrome/FF/Edge;
+      // Safari falls back to the H.264 MP4.
+      const webm = document.createElement('source');
+      webm.src = '/hero-video.webm';
+      webm.type = 'video/webm';
+      const mp4 = document.createElement('source');
+      mp4.src = '/hero-video.mp4';
+      mp4.type = 'video/mp4';
+      videoEl.appendChild(webm);
+      videoEl.appendChild(mp4);
       hero.insertBefore(videoEl, hero.firstChild);
       return videoEl;
     }
@@ -2803,7 +2812,6 @@
       const useVideo = mode === 'video';
       if (useVideo) {
         const v = ensureVideo();
-        // Wait until the video has any data before swapping; falls back gracefully if it errors
         const playPromise = v.play();
         if (playPromise && typeof playPromise.catch === 'function') {
           playPromise.catch(() => {/* autoplay blocked — toggle still flips visually */});
