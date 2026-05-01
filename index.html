@@ -193,7 +193,7 @@
      (bills shine), dark at bottom (CTAs + trust strip plate). */
   .hero::before {
     content: '';
-    position: absolute; inset: 0; z-index: 0;
+    position: absolute; inset: 0; z-index: 2;
     background:
       linear-gradient(180deg,
         rgba(13,11,31,0.55) 0%,
@@ -206,18 +206,25 @@
   }
   .hero::after {
     content: '';
-    position: absolute; inset: 0; z-index: 0;
+    position: absolute; inset: 0; z-index: 3;
     pointer-events: none;
     background: linear-gradient(180deg, rgba(13,11,31,0.35) 0%, transparent 8%);
   }
 
-  .hero .container { position: relative; z-index: 1; }
+  .hero .container { position: relative; z-index: 5; }
 
   /* ───────────────────────── HERO MEDIA TOGGLE ─────────────────────────
      Lets desktop users swap the static image background for a looping
      video and back again. Toggle hidden on mobile + reduced-motion. */
+  /* Hero stacking with explicit z-indexes (avoids DOM-order ambiguity):
+       z=0  → static background image (on .hero itself)
+       z=1  → <video.hero-video> (when active, hides the static image via .video-on)
+       z=2  → ::before dark veil (legibility)
+       z=3  → ::after subtle top fade
+       z=5  → .container with all content
+       z=999→ .hero-media-toggle */
   .hero-video {
-    position: absolute; inset: 0; z-index: 0;
+    position: absolute; inset: 0; z-index: 1;
     width: 100%; height: 100%;
     object-fit: cover;
     opacity: 0;
@@ -300,7 +307,7 @@
      align-items: flex-end keeps pills' bottoms level with CTA buttons
      even when pills have more lines than the CTA row. */
   .hero-flank-row {
-    position: relative; z-index: 1;
+    position: relative; z-index: 5;
     width: 100%; max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
