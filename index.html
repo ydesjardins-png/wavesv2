@@ -805,7 +805,62 @@
       radial-gradient(ellipse 50% 40% at 15% 50%, rgba(232,89,192,0.07) 0%, transparent 60%),
       radial-gradient(ellipse 50% 40% at 85% 50%, rgba(0,229,255,0.06) 0%, transparent 60%),
       radial-gradient(ellipse 80% 35% at 50% 100%, rgba(13,11,31,0.6) 0%, transparent 70%);
+    overflow: hidden;
   }
+  /* Tropical reprise — palm fronds drifting at the corners.
+     Pure SVG, no external assets. Sit behind the card via z-index. */
+  .cta-palms {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .cta-palm {
+    position: absolute;
+    color: #1a0e2e;
+    filter: drop-shadow(0 0 18px rgba(255,126,95,0.18));
+    transform-origin: 50% 100%;
+    will-change: transform;
+    animation: palm-sway 9s ease-in-out infinite;
+  }
+  .cta-palm-left {
+    bottom: -40px; left: -60px;
+    width: 320px; height: 360px;
+    opacity: 0.18;
+  }
+  .cta-palm-left-back {
+    bottom: -60px; left: 80px;
+    width: 240px; height: 280px;
+    opacity: 0.10;
+    animation-delay: -3s;
+    animation-duration: 11s;
+  }
+  .cta-palm-right {
+    bottom: -50px; right: -80px;
+    width: 360px; height: 400px;
+    opacity: 0.20;
+    transform: scaleX(-1);
+    animation-delay: -5s;
+    animation-duration: 10s;
+    animation-name: palm-sway-mirror;
+  }
+  @keyframes palm-sway {
+    0%, 100% { transform: rotate(-1deg); }
+    50%      { transform: rotate(1.5deg); }
+  }
+  @keyframes palm-sway-mirror {
+    0%, 100% { transform: scaleX(-1) rotate(-1deg); }
+    50%      { transform: scaleX(-1) rotate(1.5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-palm { animation: none; }
+  }
+  @media (max-width: 768px) {
+    .cta-palm-left-back { display: none; }
+    .cta-palm-left  { width: 200px; height: 240px; bottom: -30px; left: -50px; opacity: 0.14; }
+    .cta-palm-right { width: 220px; height: 260px; bottom: -30px; right: -50px; opacity: 0.16; }
+  }
+  .cta-section > .container { position: relative; z-index: 1; }
   .cta-card {
     background:
       radial-gradient(ellipse 70% 80% at 100% 0%, rgba(255,126,95,0.22) 0%, transparent 60%),
@@ -1327,7 +1382,62 @@
       radial-gradient(ellipse 50% 40% at 15% 50%, rgba(232,89,192,0.07) 0%, transparent 60%),
       radial-gradient(ellipse 50% 40% at 85% 50%, rgba(0,229,255,0.06) 0%, transparent 60%),
       radial-gradient(ellipse 80% 35% at 50% 100%, rgba(13,11,31,0.6) 0%, transparent 70%);
+    overflow: hidden;
   }
+  /* Tropical reprise — palm fronds drifting at the corners.
+     Pure SVG, no external assets. Sit behind the card via z-index. */
+  .cta-palms {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .cta-palm {
+    position: absolute;
+    color: #1a0e2e;
+    filter: drop-shadow(0 0 18px rgba(255,126,95,0.18));
+    transform-origin: 50% 100%;
+    will-change: transform;
+    animation: palm-sway 9s ease-in-out infinite;
+  }
+  .cta-palm-left {
+    bottom: -40px; left: -60px;
+    width: 320px; height: 360px;
+    opacity: 0.18;
+  }
+  .cta-palm-left-back {
+    bottom: -60px; left: 80px;
+    width: 240px; height: 280px;
+    opacity: 0.10;
+    animation-delay: -3s;
+    animation-duration: 11s;
+  }
+  .cta-palm-right {
+    bottom: -50px; right: -80px;
+    width: 360px; height: 400px;
+    opacity: 0.20;
+    transform: scaleX(-1);
+    animation-delay: -5s;
+    animation-duration: 10s;
+    animation-name: palm-sway-mirror;
+  }
+  @keyframes palm-sway {
+    0%, 100% { transform: rotate(-1deg); }
+    50%      { transform: rotate(1.5deg); }
+  }
+  @keyframes palm-sway-mirror {
+    0%, 100% { transform: scaleX(-1) rotate(-1deg); }
+    50%      { transform: scaleX(-1) rotate(1.5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-palm { animation: none; }
+  }
+  @media (max-width: 768px) {
+    .cta-palm-left-back { display: none; }
+    .cta-palm-left  { width: 200px; height: 240px; bottom: -30px; left: -50px; opacity: 0.14; }
+    .cta-palm-right { width: 220px; height: 260px; bottom: -30px; right: -50px; opacity: 0.16; }
+  }
+  .cta-section > .container { position: relative; z-index: 1; }
   .cta-card {
     background:
       radial-gradient(ellipse 70% 80% at 100% 0%, rgba(255,126,95,0.22) 0%, transparent 60%),
@@ -2047,6 +2157,73 @@
 
 <!-- ═══════════════════════════════ FINAL CTA ═══════════════════════════════ -->
 <section class="cta-section fade-in">
+
+  <!-- Tropical reprise — palm silhouettes drifting in the corners -->
+  <div class="cta-palms" aria-hidden="true">
+
+    <!-- LEFT, foreground (closer/larger) -->
+    <svg class="cta-palm cta-palm-left" viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <!-- trunk: tapered, slightly curved -->
+      <path d="M158 360 Q 152 240 162 130 Q 168 80 175 30 L 185 30 Q 178 80 172 132 Q 162 240 168 360 Z" fill="currentColor"/>
+      <!-- coconuts cluster at top of trunk -->
+      <circle cx="172" cy="42" r="6" fill="currentColor"/>
+      <circle cx="183" cy="48" r="5" fill="currentColor"/>
+      <circle cx="166" cy="52" r="5" fill="currentColor"/>
+      <!-- fronds: 7 curved fans radiating from top -->
+      <g fill="currentColor">
+        <!-- top center frond -->
+        <path d="M173 30 Q 175 -10 165 -50 Q 180 -20 195 -45 Q 188 -8 175 30 Z"/>
+        <!-- upper-right -->
+        <path d="M175 32 Q 220 -5 280 -20 Q 240 18 250 50 Q 220 30 175 32 Z"/>
+        <!-- right horizontal -->
+        <path d="M178 40 Q 240 40 310 70 Q 250 56 178 50 Z"/>
+        <!-- lower-right -->
+        <path d="M178 52 Q 245 70 305 130 Q 240 90 178 60 Z"/>
+        <!-- upper-left -->
+        <path d="M170 32 Q 120 -8 50 -25 Q 95 18 80 50 Q 120 30 170 32 Z"/>
+        <!-- left horizontal -->
+        <path d="M168 42 Q 100 40 18 65 Q 90 55 168 50 Z"/>
+        <!-- lower-left -->
+        <path d="M168 52 Q 95 72 20 130 Q 90 92 168 60 Z"/>
+      </g>
+    </svg>
+
+    <!-- LEFT, background (smaller/more distant) -->
+    <svg class="cta-palm cta-palm-left-back" viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <path d="M158 360 Q 152 240 162 130 Q 168 80 175 30 L 185 30 Q 178 80 172 132 Q 162 240 168 360 Z" fill="currentColor"/>
+      <circle cx="172" cy="42" r="6" fill="currentColor"/>
+      <circle cx="183" cy="48" r="5" fill="currentColor"/>
+      <circle cx="166" cy="52" r="5" fill="currentColor"/>
+      <g fill="currentColor">
+        <path d="M173 30 Q 175 -10 165 -50 Q 180 -20 195 -45 Q 188 -8 175 30 Z"/>
+        <path d="M175 32 Q 220 -5 280 -20 Q 240 18 250 50 Q 220 30 175 32 Z"/>
+        <path d="M178 40 Q 240 40 310 70 Q 250 56 178 50 Z"/>
+        <path d="M178 52 Q 245 70 305 130 Q 240 90 178 60 Z"/>
+        <path d="M170 32 Q 120 -8 50 -25 Q 95 18 80 50 Q 120 30 170 32 Z"/>
+        <path d="M168 42 Q 100 40 18 65 Q 90 55 168 50 Z"/>
+        <path d="M168 52 Q 95 72 20 130 Q 90 92 168 60 Z"/>
+      </g>
+    </svg>
+
+    <!-- RIGHT (mirrored via CSS scaleX) -->
+    <svg class="cta-palm cta-palm-right" viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <path d="M158 360 Q 152 240 162 130 Q 168 80 175 30 L 185 30 Q 178 80 172 132 Q 162 240 168 360 Z" fill="currentColor"/>
+      <circle cx="172" cy="42" r="6" fill="currentColor"/>
+      <circle cx="183" cy="48" r="5" fill="currentColor"/>
+      <circle cx="166" cy="52" r="5" fill="currentColor"/>
+      <g fill="currentColor">
+        <path d="M173 30 Q 175 -10 165 -50 Q 180 -20 195 -45 Q 188 -8 175 30 Z"/>
+        <path d="M175 32 Q 220 -5 280 -20 Q 240 18 250 50 Q 220 30 175 32 Z"/>
+        <path d="M178 40 Q 240 40 310 70 Q 250 56 178 50 Z"/>
+        <path d="M178 52 Q 245 70 305 130 Q 240 90 178 60 Z"/>
+        <path d="M170 32 Q 120 -8 50 -25 Q 95 18 80 50 Q 120 30 170 32 Z"/>
+        <path d="M168 42 Q 100 40 18 65 Q 90 55 168 50 Z"/>
+        <path d="M168 52 Q 95 72 20 130 Q 90 92 168 60 Z"/>
+      </g>
+    </svg>
+
+  </div>
+
   <div class="container">
     <div class="cta-card">
       <h2 class="cta-title">Ready to get your cash?</h2>
