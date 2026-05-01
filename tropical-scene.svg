@@ -1,6 +1,5 @@
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'>
   <defs>
-    <!-- Sky gradient: deep navy top -> magenta -> coral horizon glow -->
     <linearGradient id='sky' x1='0' y1='0' x2='0' y2='1'>
       <stop offset='0%' stop-color='#1B1450'/>
       <stop offset='35%' stop-color='#3A1E6B'/>
@@ -9,26 +8,46 @@
       <stop offset='90%' stop-color='#E87A55'/>
       <stop offset='100%' stop-color='#FFB37C'/>
     </linearGradient>
-    <!-- Sun glow at horizon -->
     <radialGradient id='sun' cx='0.5' cy='0.78' r='0.35'>
       <stop offset='0%' stop-color='rgba(255,200,140,0.85)'/>
       <stop offset='40%' stop-color='rgba(255,140,100,0.4)'/>
       <stop offset='100%' stop-color='rgba(232,89,128,0)'/>
     </radialGradient>
-    <!-- Ocean gradient: dark below horizon, lighter teal toward foreground -->
+    <linearGradient id='ray' x1='0' y1='1' x2='0' y2='0'>
+      <stop offset='0%' stop-color='rgba(255,200,140,0.35)'/>
+      <stop offset='60%' stop-color='rgba(255,180,124,0.10)'/>
+      <stop offset='100%' stop-color='rgba(255,180,124,0)'/>
+    </linearGradient>
     <linearGradient id='ocean' x1='0' y1='0' x2='0' y2='1'>
       <stop offset='0%' stop-color='#3D2864'/>
       <stop offset='40%' stop-color='#2D3F7A'/>
       <stop offset='100%' stop-color='#1A2150'/>
     </linearGradient>
+    <symbol id='bird' viewBox='0 0 16 6' overflow='visible'>
+      <path d='M 0 5 Q 3 0 6 4 Q 8 2.5 10 4 Q 13 0 16 5'
+            fill='none' stroke='#08060f' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/>
+    </symbol>
   </defs>
 
-  <!-- Sky -->
   <rect width='1600' height='620' fill='url(#sky)'/>
-  <!-- Sun glow centered at horizon -->
+
+  <!-- SUN RAYS — diagonal beams radiating up from the horizon sun -->
+  <g transform='translate(800, 620)' style='mix-blend-mode: screen;'>
+    <g opacity='0.7'>
+      <polygon points='-12,0 12,0 200,-540' fill='url(#ray)' transform='rotate(-30)'/>
+      <polygon points='-10,0 10,0 140,-540' fill='url(#ray)' transform='rotate(-18)'/>
+      <polygon points='-8,0 8,0 50,-540' fill='url(#ray)' transform='rotate(-7)'/>
+      <polygon points='-8,0 8,0 -50,-540' fill='url(#ray)' transform='rotate(7)'/>
+      <polygon points='-10,0 10,0 -140,-540' fill='url(#ray)' transform='rotate(18)'/>
+      <polygon points='-12,0 12,0 -200,-540' fill='url(#ray)' transform='rotate(30)'/>
+      <polygon points='-16,0 16,0 -360,-460' fill='url(#ray)' opacity='0.6' transform='rotate(45)'/>
+      <polygon points='-16,0 16,0 360,-460' fill='url(#ray)' opacity='0.6' transform='rotate(-45)'/>
+    </g>
+    <animate attributeName='opacity' values='0.55;0.85;0.55' dur='8s' repeatCount='indefinite'/>
+  </g>
+
   <ellipse cx='800' cy='620' rx='420' ry='140' fill='url(#sun)'/>
 
-  <!-- Stars in upper sky (very faint) -->
   <g fill='#FFFFFF' opacity='0.4'>
     <circle cx='180' cy='80' r='1'/>
     <circle cx='340' cy='160' r='1.2'/>
@@ -39,17 +58,42 @@
     <circle cx='710' cy='220' r='0.9'/>
   </g>
 
-  <!-- Wispy clouds, soft pink underbelly catching the sunset -->
   <g opacity='0.35'>
     <ellipse cx='250' cy='340' rx='180' ry='14' fill='#E87A55'/>
     <ellipse cx='1100' cy='280' rx='220' ry='12' fill='#C2456A'/>
     <ellipse cx='1350' cy='400' rx='140' ry='10' fill='#FFB37C'/>
   </g>
 
-  <!-- Ocean -->
-  <rect y='620' width='1600' height='280' fill='url(#ocean)'/>
+  <!-- BIRDS — drifting gull silhouettes at varied scale, height, and speed -->
+  <g>
+    <g>
+      <use href='#bird' x='-30' y='180' width='14' height='5' opacity='0.55'/>
+      <animateTransform attributeName='transform' type='translate'
+                        from='0 0' to='1660 0' dur='90s' repeatCount='indefinite'/>
+    </g>
+    <g>
+      <use href='#bird' x='-50' y='240' width='20' height='7' opacity='0.7'/>
+      <use href='#bird' x='-25' y='260' width='16' height='6' opacity='0.6'/>
+      <animateTransform attributeName='transform' type='translate'
+                        from='0 0' to='1680 0' dur='70s' repeatCount='indefinite'/>
+    </g>
+    <g>
+      <use href='#bird' x='-40' y='340' width='28' height='10' opacity='0.85'/>
+      <animateTransform attributeName='transform' type='translate'
+                        from='0 0' to='1700 0' dur='55s' repeatCount='indefinite'
+                        begin='-20s'/>
+    </g>
+    <g>
+      <use href='#bird' x='1640' y='200' width='18' height='6' opacity='0.65'/>
+      <animateTransform attributeName='transform' type='translate'
+                        from='0 0' to='-1700 0' dur='80s' repeatCount='indefinite'
+                        begin='-30s'/>
+    </g>
+  </g>
 
-  <!-- Sun reflection shimmer on the water -->
+  <rect y='620' width='1600' height='280' fill='url(#ocean)'/>
+  <rect y='618' width='1600' height='2' fill='rgba(255,200,140,0.6)'/>
+
   <g opacity='0.55'>
     <ellipse cx='800' cy='640' rx='140' ry='3' fill='#FFB37C'/>
     <ellipse cx='800' cy='660' rx='180' ry='2' fill='#E87A55'/>
@@ -57,57 +101,45 @@
     <ellipse cx='800' cy='710' rx='200' ry='1.5' fill='#7A2A6E'/>
   </g>
 
-  <!-- Horizon line glow (thin warm strip) -->
-  <rect y='618' width='1600' height='2' fill='rgba(255,200,140,0.6)'/>
+  <!-- ANIMATED WATER SHIMMER — twinkling glints across the sun reflection -->
+  <g fill='#FFE0B0'>
+    <circle cx='720' cy='655' r='2' opacity='0.6'>
+      <animate attributeName='opacity' values='0.2;0.95;0.2' dur='2.4s' repeatCount='indefinite' begin='0s'/>
+    </circle>
+    <circle cx='760' cy='672' r='1.5' opacity='0.5'>
+      <animate attributeName='opacity' values='0.15;0.85;0.15' dur='3s' repeatCount='indefinite' begin='-0.7s'/>
+    </circle>
+    <circle cx='820' cy='648' r='2.2' opacity='0.7'>
+      <animate attributeName='opacity' values='0.25;1;0.25' dur='2.1s' repeatCount='indefinite' begin='-1.2s'/>
+    </circle>
+    <circle cx='850' cy='670' r='1.6' opacity='0.55'>
+      <animate attributeName='opacity' values='0.2;0.9;0.2' dur='2.7s' repeatCount='indefinite' begin='-0.4s'/>
+    </circle>
+    <circle cx='880' cy='658' r='2' opacity='0.65'>
+      <animate attributeName='opacity' values='0.2;0.95;0.2' dur='2.3s' repeatCount='indefinite' begin='-1.6s'/>
+    </circle>
+    <circle cx='780' cy='692' r='1.4' opacity='0.5'>
+      <animate attributeName='opacity' values='0.15;0.8;0.15' dur='3.2s' repeatCount='indefinite' begin='-1.9s'/>
+    </circle>
+    <circle cx='830' cy='698' r='1.8' opacity='0.6'>
+      <animate attributeName='opacity' values='0.2;0.9;0.2' dur='2.6s' repeatCount='indefinite' begin='-0.2s'/>
+    </circle>
+    <circle cx='870' cy='704' r='1.4' opacity='0.5'>
+      <animate attributeName='opacity' values='0.15;0.85;0.15' dur='2.9s' repeatCount='indefinite' begin='-2.2s'/>
+    </circle>
+    <circle cx='770' cy='714' r='1.2' opacity='0.45'>
+      <animate attributeName='opacity' values='0.1;0.75;0.1' dur='3.4s' repeatCount='indefinite' begin='-0.9s'/>
+    </circle>
+    <circle cx='840' cy='720' r='1.6' opacity='0.55'>
+      <animate attributeName='opacity' values='0.2;0.9;0.2' dur='2.5s' repeatCount='indefinite' begin='-1.4s'/>
+    </circle>
+  </g>
 
-  <!-- Wave crests, faint white lines -->
   <g stroke='rgba(255,255,255,0.18)' stroke-width='1' fill='none'>
     <path d='M 0 720 Q 200 715 400 720 T 800 720 T 1200 720 T 1600 720'/>
     <path d='M 0 770 Q 250 763 500 770 T 1000 770 T 1600 770'/>
     <path d='M 0 820 Q 200 814 400 820 T 800 820 T 1200 820 T 1600 820'/>
   </g>
 
-  <!-- DISTANT PALM SILHOUETTES — far back, just suggestion of tropical shore.
-       Drawn small and dark, anchored to the ocean horizon line. -->
-  <g fill='#08060f' opacity='0.85'>
-    <!-- Far left palm cluster -->
-    <g transform='translate(80, 460)'>
-      <path d='M 36 160 C 34 100, 32 50, 38 0 L 42 0 C 40 50, 38 100, 40 160 Z'/>
-      <path d='M 38 0 C 10 -8, -18 -2, -38 12 C -10 6, 14 8, 38 6 Z'/>
-      <path d='M 38 0 C 10 -22, -16 -32, -42 -28 C -8 -22, 16 -16, 38 -6 Z'/>
-      <path d='M 38 0 C 14 -42, -2 -60, -22 -64 C 6 -50, 22 -28, 40 -8 Z'/>
-      <path d='M 40 0 C 60 -8, 84 -4, 102 8 C 80 4, 60 6, 40 6 Z'/>
-      <path d='M 40 0 C 64 -20, 88 -28, 110 -22 C 84 -16, 64 -8, 40 -2 Z'/>
-      <path d='M 40 0 C 60 -38, 78 -56, 96 -56 C 76 -42, 60 -22, 42 -4 Z'/>
-    </g>
-    <!-- Mid-left smaller palm -->
-    <g transform='translate(220, 500) scale(0.65)'>
-      <path d='M 36 160 C 34 100, 32 50, 38 0 L 42 0 C 40 50, 38 100, 40 160 Z'/>
-      <path d='M 38 0 C 10 -8, -18 -2, -38 12 C -10 6, 14 8, 38 6 Z'/>
-      <path d='M 38 0 C 14 -42, -2 -60, -22 -64 C 6 -50, 22 -28, 40 -8 Z'/>
-      <path d='M 40 0 C 60 -8, 84 -4, 102 8 C 80 4, 60 6, 40 6 Z'/>
-      <path d='M 40 0 C 60 -38, 78 -56, 96 -56 C 76 -42, 60 -22, 42 -4 Z'/>
-    </g>
-    <!-- Far right palm cluster (mirrored) -->
-    <g transform='translate(1480, 460) scale(-1, 1)'>
-      <path d='M 36 160 C 34 100, 32 50, 38 0 L 42 0 C 40 50, 38 100, 40 160 Z'/>
-      <path d='M 38 0 C 10 -8, -18 -2, -38 12 C -10 6, 14 8, 38 6 Z'/>
-      <path d='M 38 0 C 10 -22, -16 -32, -42 -28 C -8 -22, 16 -16, 38 -6 Z'/>
-      <path d='M 38 0 C 14 -42, -2 -60, -22 -64 C 6 -50, 22 -28, 40 -8 Z'/>
-      <path d='M 40 0 C 60 -8, 84 -4, 102 8 C 80 4, 60 6, 40 6 Z'/>
-      <path d='M 40 0 C 64 -20, 88 -28, 110 -22 C 84 -16, 64 -8, 40 -2 Z'/>
-      <path d='M 40 0 C 60 -38, 78 -56, 96 -56 C 76 -42, 60 -22, 42 -4 Z'/>
-    </g>
-    <!-- Mid-right smaller -->
-    <g transform='translate(1340, 500) scale(-0.65, 0.65)'>
-      <path d='M 36 160 C 34 100, 32 50, 38 0 L 42 0 C 40 50, 38 100, 40 160 Z'/>
-      <path d='M 38 0 C 10 -8, -18 -2, -38 12 C -10 6, 14 8, 38 6 Z'/>
-      <path d='M 38 0 C 14 -42, -2 -60, -22 -64 C 6 -50, 22 -28, 40 -8 Z'/>
-      <path d='M 40 0 C 60 -8, 84 -4, 102 8 C 80 4, 60 6, 40 6 Z'/>
-      <path d='M 40 0 C 60 -38, 78 -56, 96 -56 C 76 -42, 60 -22, 42 -4 Z'/>
-    </g>
-  </g>
-
-  <!-- Beach sand line at the very bottom (faint, suggestive) -->
   <ellipse cx='800' cy='890' rx='1100' ry='40' fill='#3A2855' opacity='0.7'/>
 </svg>
