@@ -2791,11 +2791,11 @@
       videoEl.loop = true;
       videoEl.playsInline = true;
       videoEl.autoplay = true;
-      videoEl.preload = 'metadata';
+      videoEl.preload = 'auto'; // bumped from 'metadata' so it actually loads on toggle
       videoEl.poster = '/hero-video-poster.jpeg';
       videoEl.setAttribute('aria-hidden', 'true');
       // Browser picks the first <source> it can decode — WebM first because
-      // it's smaller (~1.1MB vs 1.5MB) and well-supported in Chrome/FF/Edge;
+      // it's smaller (~1.2MB vs 1.5MB) and well-supported in Chrome/FF/Edge;
       // Safari falls back to the H.264 MP4.
       const webm = document.createElement('source');
       webm.src = '/hero-video.webm';
@@ -2805,6 +2805,14 @@
       mp4.type = 'video/mp4';
       videoEl.appendChild(webm);
       videoEl.appendChild(mp4);
+
+      // Diagnostic event listeners — visible in DevTools console
+      videoEl.addEventListener('error',     () => console.warn('[hero-video] error event:', videoEl.error));
+      webm.addEventListener('error',        () => console.warn('[hero-video] webm source failed (will try mp4)'));
+      mp4.addEventListener('error',         () => console.warn('[hero-video] mp4 source failed'));
+      videoEl.addEventListener('canplay',   () => console.log('[hero-video] canplay — ready'));
+      videoEl.addEventListener('playing',   () => console.log('[hero-video] playing'));
+
       hero.insertBefore(videoEl, hero.firstChild);
       return videoEl;
     }
@@ -2815,7 +2823,9 @@
         const v = ensureVideo();
         const playPromise = v.play();
         if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {/* autoplay blocked — toggle still flips visually */});
+          playPromise
+            .then(() => console.log('[hero-video] play() resolved'))
+            .catch(err => console.warn('[hero-video] play() rejected:', err.name, err.message));
         }
         hero.classList.add('video-on');
         toggle.setAttribute('aria-pressed', 'true');
