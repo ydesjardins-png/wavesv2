@@ -742,42 +742,149 @@
       radial-gradient(ellipse 70% 55% at 92% 0%, rgba(255,209,102,0.07) 0%, transparent 55%),
       radial-gradient(ellipse 60% 50% at 8% 100%, rgba(0,229,255,0.06) 0%, transparent 55%);
   }
-  .reviews-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+  /* ── TRUST STRIP ABOVE THE MARQUEE ── */
+  .reviews-trust {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; flex-wrap: wrap;
+    margin: 0 auto 48px; max-width: 760px;
+    padding: 14px 24px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,209,102,0.22);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
+  .reviews-trust-stars { display: inline-flex; gap: 2px; color: var(--gold); font-size: 1.05rem; line-height: 1; text-shadow: 0 0 12px rgba(255,209,102,0.6); }
+  .reviews-trust-rating { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; color: var(--white); }
+  .reviews-trust-rating em { font-style: normal; color: rgba(255,255,255,0.6); font-weight: 600; }
+  .reviews-trust-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.18); }
+  .reviews-trust-meta { font-size: 0.82rem; color: rgba(255,255,255,0.75); }
+
+  /* ── MARQUEE: outer mask gives the soft fade-edge effect ── */
+  .reviews-marquee {
+    position: relative;
+    margin: 0 -24px;  /* bleed past the container so cards don't visually clip */
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  }
+  .reviews-row {
+    display: flex; gap: 20px;
+    width: max-content;          /* rows are wider than viewport — that's the point */
+    will-change: transform;
+    animation: reviews-scroll 50s linear infinite;
+  }
+  .reviews-row.reverse {
+    animation-direction: reverse;
+    animation-duration: 60s;     /* slightly different speed = depth illusion */
+    margin-top: 20px;
+  }
+  /* Pause when hovering the section so users can read */
+  .reviews-marquee:hover .reviews-row { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    .reviews-row { animation: none; transform: translateX(0); }
+    .reviews-marquee {
+      -webkit-mask-image: none; mask-image: none;
+      overflow-x: auto;          /* fall back to manual scroll for reduced-motion users */
+      scrollbar-width: thin;
+    }
+  }
+  /* The keyframes shift the row by exactly 50% of its width — because the
+     row contains 2 copies of each card, it loops seamlessly. */
+  @keyframes reviews-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── REVIEW CARD ── */
   .review-card {
+    flex: 0 0 360px;           /* fixed-width cards work cleanly with translateX */
     background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--card-warm-border);
-    border-radius: var(--r-lg); padding: 28px;
+    border-radius: var(--r-lg); padding: 26px 28px;
     transition: background 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+    position: relative;
   }
   .review-card:hover {
     background: var(--card-warm-bg-hover);
     border-color: var(--card-warm-border-hover);
     transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(255,126,95,0.12), 0 4px 16px rgba(13,11,31,0.4);
+    box-shadow: 0 18px 40px rgba(255,126,95,0.18), 0 4px 16px rgba(13,11,31,0.4);
   }
-  .review-stars { margin-bottom: 14px; }
+  /* Subtle quote mark in the top-right corner — makes the card feel alive */
+  .review-card::before {
+    content: '"';
+    position: absolute; top: 8px; right: 22px;
+    font-family: Georgia, serif;
+    font-size: 4rem; line-height: 1;
+    color: rgba(232,89,192,0.18);
+    pointer-events: none;
+  }
+
+  /* Verified + date row above the stars */
+  .review-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; margin-bottom: 10px;
+    font-size: 0.7rem;
+  }
+  .review-verified {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--teal); font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .review-verified::before {
+    content: '';
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230D0B1F' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12.5l4 4L19 7'/></svg>") center/8px 8px no-repeat,
+      var(--teal);
+  }
+  .review-date {
+    color: rgba(255,255,255,0.5); font-weight: 500;
+  }
+
+  /* Stars shimmer in sequence — like they're filling in as the card enters view */
+  .review-stars { margin-bottom: 14px; line-height: 1; }
+  .review-stars span {
+    display: inline-block;
+    color: var(--gold);
+    text-shadow: 0 0 8px rgba(255,209,102,0.4);
+    animation: star-shimmer 4.5s ease-in-out infinite;
+  }
+  .review-stars span:nth-child(1) { animation-delay: 0s; }
+  .review-stars span:nth-child(2) { animation-delay: 0.3s; }
+  .review-stars span:nth-child(3) { animation-delay: 0.6s; }
+  .review-stars span:nth-child(4) { animation-delay: 0.9s; }
+  .review-stars span:nth-child(5) { animation-delay: 1.2s; }
+  @keyframes star-shimmer {
+    0%, 80%, 100% { text-shadow: 0 0 8px rgba(255,209,102,0.4); transform: scale(1); }
+    40%           { text-shadow: 0 0 16px rgba(255,209,102,0.95), 0 0 4px rgba(255,255,255,0.6); transform: scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .review-stars span { animation: none; }
+  }
+
   .review-text {
-    font-size: 0.9rem; color: rgba(255,255,255,0.85);
-    line-height: 1.7; margin-bottom: 20px;
-    font-style: italic;
+    font-size: 0.9rem; color: rgba(255,255,255,0.88);
+    line-height: 1.65; margin-bottom: 20px;
   }
   .reviewer { display: flex; align-items: center; gap: 12px; }
   .reviewer-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
+    width: 38px; height: 38px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-family: var(--font-display); font-size: 0.85rem;
     font-weight: 700; color: white;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.06);
   }
   .av-1 { background: linear-gradient(135deg, var(--royal), var(--iris)); }
   .av-2 { background: linear-gradient(135deg, var(--iris), var(--teal)); }
   .av-3 { background: linear-gradient(135deg, var(--teal), var(--cyan)); color: var(--deep); }
-  .reviewer-name { font-weight: 600; font-size: 0.88rem; }
-  .reviewer-loc { font-size: 0.75rem; color: var(--text-muted); }
+  .reviewer-name { font-weight: 700; font-size: 0.9rem; line-height: 1.2; }
+  .reviewer-loc { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
 
   /* ─── STATS ─── */
   .stats-section {
@@ -1042,7 +1149,7 @@
     .hero { padding: 100px 0 120px; }
     .steps-grid { grid-template-columns: 1fr; }
     .step-connector, .step-connector-2 { display: none; }
-    .reviews-grid { grid-template-columns: 1fr; }
+    .review-card { flex: 0 0 280px; padding: 22px; }
     .features-grid { grid-template-columns: 1fr; }
     .stats-card { grid-template-columns: repeat(3, 1fr); padding: 36px 24px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -1392,42 +1499,149 @@
       radial-gradient(ellipse 70% 55% at 92% 0%, rgba(255,209,102,0.07) 0%, transparent 55%),
       radial-gradient(ellipse 60% 50% at 8% 100%, rgba(0,229,255,0.06) 0%, transparent 55%);
   }
-  .reviews-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+  /* ── TRUST STRIP ABOVE THE MARQUEE ── */
+  .reviews-trust {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; flex-wrap: wrap;
+    margin: 0 auto 48px; max-width: 760px;
+    padding: 14px 24px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,209,102,0.22);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
+  .reviews-trust-stars { display: inline-flex; gap: 2px; color: var(--gold); font-size: 1.05rem; line-height: 1; text-shadow: 0 0 12px rgba(255,209,102,0.6); }
+  .reviews-trust-rating { font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; color: var(--white); }
+  .reviews-trust-rating em { font-style: normal; color: rgba(255,255,255,0.6); font-weight: 600; }
+  .reviews-trust-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.18); }
+  .reviews-trust-meta { font-size: 0.82rem; color: rgba(255,255,255,0.75); }
+
+  /* ── MARQUEE: outer mask gives the soft fade-edge effect ── */
+  .reviews-marquee {
+    position: relative;
+    margin: 0 -24px;  /* bleed past the container so cards don't visually clip */
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  }
+  .reviews-row {
+    display: flex; gap: 20px;
+    width: max-content;          /* rows are wider than viewport — that's the point */
+    will-change: transform;
+    animation: reviews-scroll 50s linear infinite;
+  }
+  .reviews-row.reverse {
+    animation-direction: reverse;
+    animation-duration: 60s;     /* slightly different speed = depth illusion */
+    margin-top: 20px;
+  }
+  /* Pause when hovering the section so users can read */
+  .reviews-marquee:hover .reviews-row { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    .reviews-row { animation: none; transform: translateX(0); }
+    .reviews-marquee {
+      -webkit-mask-image: none; mask-image: none;
+      overflow-x: auto;          /* fall back to manual scroll for reduced-motion users */
+      scrollbar-width: thin;
+    }
+  }
+  /* The keyframes shift the row by exactly 50% of its width — because the
+     row contains 2 copies of each card, it loops seamlessly. */
+  @keyframes reviews-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── REVIEW CARD ── */
   .review-card {
+    flex: 0 0 360px;           /* fixed-width cards work cleanly with translateX */
     background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--card-warm-border);
-    border-radius: var(--r-lg); padding: 28px;
+    border-radius: var(--r-lg); padding: 26px 28px;
     transition: background 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+    position: relative;
   }
   .review-card:hover {
     background: var(--card-warm-bg-hover);
     border-color: var(--card-warm-border-hover);
     transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(255,126,95,0.12), 0 4px 16px rgba(13,11,31,0.4);
+    box-shadow: 0 18px 40px rgba(255,126,95,0.18), 0 4px 16px rgba(13,11,31,0.4);
   }
-  .review-stars { margin-bottom: 14px; }
+  /* Subtle quote mark in the top-right corner — makes the card feel alive */
+  .review-card::before {
+    content: '"';
+    position: absolute; top: 8px; right: 22px;
+    font-family: Georgia, serif;
+    font-size: 4rem; line-height: 1;
+    color: rgba(232,89,192,0.18);
+    pointer-events: none;
+  }
+
+  /* Verified + date row above the stars */
+  .review-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; margin-bottom: 10px;
+    font-size: 0.7rem;
+  }
+  .review-verified {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--teal); font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .review-verified::before {
+    content: '';
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230D0B1F' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12.5l4 4L19 7'/></svg>") center/8px 8px no-repeat,
+      var(--teal);
+  }
+  .review-date {
+    color: rgba(255,255,255,0.5); font-weight: 500;
+  }
+
+  /* Stars shimmer in sequence — like they're filling in as the card enters view */
+  .review-stars { margin-bottom: 14px; line-height: 1; }
+  .review-stars span {
+    display: inline-block;
+    color: var(--gold);
+    text-shadow: 0 0 8px rgba(255,209,102,0.4);
+    animation: star-shimmer 4.5s ease-in-out infinite;
+  }
+  .review-stars span:nth-child(1) { animation-delay: 0s; }
+  .review-stars span:nth-child(2) { animation-delay: 0.3s; }
+  .review-stars span:nth-child(3) { animation-delay: 0.6s; }
+  .review-stars span:nth-child(4) { animation-delay: 0.9s; }
+  .review-stars span:nth-child(5) { animation-delay: 1.2s; }
+  @keyframes star-shimmer {
+    0%, 80%, 100% { text-shadow: 0 0 8px rgba(255,209,102,0.4); transform: scale(1); }
+    40%           { text-shadow: 0 0 16px rgba(255,209,102,0.95), 0 0 4px rgba(255,255,255,0.6); transform: scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .review-stars span { animation: none; }
+  }
+
   .review-text {
-    font-size: 0.9rem; color: rgba(255,255,255,0.85);
-    line-height: 1.7; margin-bottom: 20px;
-    font-style: italic;
+    font-size: 0.9rem; color: rgba(255,255,255,0.88);
+    line-height: 1.65; margin-bottom: 20px;
   }
   .reviewer { display: flex; align-items: center; gap: 12px; }
   .reviewer-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
+    width: 38px; height: 38px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-family: var(--font-display); font-size: 0.85rem;
     font-weight: 700; color: white;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.06);
   }
   .av-1 { background: linear-gradient(135deg, var(--royal), var(--iris)); }
   .av-2 { background: linear-gradient(135deg, var(--iris), var(--teal)); }
   .av-3 { background: linear-gradient(135deg, var(--teal), var(--cyan)); color: var(--deep); }
-  .reviewer-name { font-weight: 600; font-size: 0.88rem; }
-  .reviewer-loc { font-size: 0.75rem; color: var(--text-muted); }
+  .reviewer-name { font-weight: 700; font-size: 0.9rem; line-height: 1.2; }
+  .reviewer-loc { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
 
   /* ─── STATS ─── */
   .stats-section {
@@ -1692,7 +1906,7 @@
     .hero { padding: 100px 0 120px; }
     .steps-grid { grid-template-columns: 1fr; }
     .step-connector, .step-connector-2 { display: none; }
-    .reviews-grid { grid-template-columns: 1fr; }
+    .review-card { flex: 0 0 280px; padding: 22px; }
     .features-grid { grid-template-columns: 1fr; }
     .stats-card { grid-template-columns: repeat(3, 1fr); padding: 36px 24px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -2215,9 +2429,21 @@
       <p class="section-sub">Don't just take our word for it — here's what our customers say about their experience with Waves Financial.</p>
     </div>
 
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-stars stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+    <div class="reviews-trust" role="status" aria-label="4.9 out of 5 stars based on 50000 reviews">
+      <span class="reviews-trust-stars" aria-hidden="true">★★★★★</span>
+      <span class="reviews-trust-rating">4.9 <em>/ 5</em></span>
+      <span class="reviews-trust-sep" aria-hidden="true"></span>
+      <span class="reviews-trust-meta">based on <strong>50,000+</strong> verified loans</span>
+    </div>
+
+    <div class="reviews-marquee" aria-label="Customer reviews carousel">
+      <div class="reviews-row" role="list">
+      <article class="review-card" aria-label="Review by James M from Toronto">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">2 days ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
         <p class="review-text">"I was skeptical at first, but the process was incredibly smooth. Applied at 9pm and had the money in my account by 9:15pm. Absolutely unreal. Will definitely use again."</p>
         <div class="reviewer">
           <div class="reviewer-avatar av-1">JM</div>
@@ -2226,9 +2452,13 @@
             <div class="reviewer-loc">Toronto, ON</div>
           </div>
         </div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      </article>
+      <article class="review-card" aria-label="Review by Sarah L from Vancouver">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">1 week ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
         <p class="review-text">"My car broke down and I needed cash fast. Waves Financial had me approved in under 10 minutes. The flexible repayment options made it easy to budget for. Highly recommend."</p>
         <div class="reviewer">
           <div class="reviewer-avatar av-2">SL</div>
@@ -2237,9 +2467,13 @@
             <div class="reviewer-loc">Vancouver, BC</div>
           </div>
         </div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      </article>
+      <article class="review-card" aria-label="Review by Ryan P from Halifax">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">3 weeks ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
         <p class="review-text">"No credit check was a huge deal for me. I've been turned down everywhere else. Waves Financial treated me with respect and got me the money I needed. Thank you!"</p>
         <div class="reviewer">
           <div class="reviewer-avatar av-3">RP</div>
@@ -2248,6 +2482,144 @@
             <div class="reviewer-loc">Halifax, NS</div>
           </div>
         </div>
+      </article>
+      <article aria-hidden="true" class="review-card" aria-label="Review by James M from Toronto">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">2 days ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"I was skeptical at first, but the process was incredibly smooth. Applied at 9pm and had the money in my account by 9:15pm. Absolutely unreal. Will definitely use again."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-1">JM</div>
+          <div>
+            <div class="reviewer-name">James M.</div>
+            <div class="reviewer-loc">Toronto, ON</div>
+          </div>
+        </div>
+      </article>
+      <article aria-hidden="true" class="review-card" aria-label="Review by Sarah L from Vancouver">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">1 week ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"My car broke down and I needed cash fast. Waves Financial had me approved in under 10 minutes. The flexible repayment options made it easy to budget for. Highly recommend."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-2">SL</div>
+          <div>
+            <div class="reviewer-name">Sarah L.</div>
+            <div class="reviewer-loc">Vancouver, BC</div>
+          </div>
+        </div>
+      </article>
+      <article aria-hidden="true" class="review-card" aria-label="Review by Ryan P from Halifax">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">3 weeks ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"No credit check was a huge deal for me. I've been turned down everywhere else. Waves Financial treated me with respect and got me the money I needed. Thank you!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-3">RP</div>
+          <div>
+            <div class="reviewer-name">Ryan P.</div>
+            <div class="reviewer-loc">Halifax, NS</div>
+          </div>
+        </div>
+      </article>
+      </div>
+      <div class="reviews-row reverse" role="list" aria-hidden="true">
+      <article class="review-card" aria-label="Review by Ryan P from Halifax">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">3 weeks ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"No credit check was a huge deal for me. I've been turned down everywhere else. Waves Financial treated me with respect and got me the money I needed. Thank you!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-3">RP</div>
+          <div>
+            <div class="reviewer-name">Ryan P.</div>
+            <div class="reviewer-loc">Halifax, NS</div>
+          </div>
+        </div>
+      </article>
+      <article class="review-card" aria-label="Review by James M from Toronto">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">2 days ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"I was skeptical at first, but the process was incredibly smooth. Applied at 9pm and had the money in my account by 9:15pm. Absolutely unreal. Will definitely use again."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-1">JM</div>
+          <div>
+            <div class="reviewer-name">James M.</div>
+            <div class="reviewer-loc">Toronto, ON</div>
+          </div>
+        </div>
+      </article>
+      <article class="review-card" aria-label="Review by Sarah L from Vancouver">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">1 week ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"My car broke down and I needed cash fast. Waves Financial had me approved in under 10 minutes. The flexible repayment options made it easy to budget for. Highly recommend."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-2">SL</div>
+          <div>
+            <div class="reviewer-name">Sarah L.</div>
+            <div class="reviewer-loc">Vancouver, BC</div>
+          </div>
+        </div>
+      </article>
+      <article aria-hidden="true" class="review-card" aria-label="Review by Ryan P from Halifax">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">3 weeks ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"No credit check was a huge deal for me. I've been turned down everywhere else. Waves Financial treated me with respect and got me the money I needed. Thank you!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-3">RP</div>
+          <div>
+            <div class="reviewer-name">Ryan P.</div>
+            <div class="reviewer-loc">Halifax, NS</div>
+          </div>
+        </div>
+      </article>
+      <article aria-hidden="true" class="review-card" aria-label="Review by James M from Toronto">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">2 days ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"I was skeptical at first, but the process was incredibly smooth. Applied at 9pm and had the money in my account by 9:15pm. Absolutely unreal. Will definitely use again."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-1">JM</div>
+          <div>
+            <div class="reviewer-name">James M.</div>
+            <div class="reviewer-loc">Toronto, ON</div>
+          </div>
+        </div>
+      </article>
+      <article aria-hidden="true" class="review-card" aria-label="Review by Sarah L from Vancouver">
+        <div class="review-meta">
+          <span class="review-verified">Verified Customer</span>
+          <span class="review-date">1 week ago</span>
+        </div>
+        <div class="review-stars stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="review-text">"My car broke down and I needed cash fast. Waves Financial had me approved in under 10 minutes. The flexible repayment options made it easy to budget for. Highly recommend."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av-2">SL</div>
+          <div>
+            <div class="reviewer-name">Sarah L.</div>
+            <div class="reviewer-loc">Vancouver, BC</div>
+          </div>
+        </div>
+      </article>
       </div>
     </div>
   </div>
