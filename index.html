@@ -2828,11 +2828,20 @@
         console.warn('[hero-video] ERROR code', e && e.code, 'message:', e && e.message);
       });
 
-      hero.insertBefore(videoEl, hero.firstChild);
-      // Force a reload in case any stale state from a prior insertion lingers
+      // Append AT THE END of .hero (not as firstChild). When inserted as
+      // firstChild, Chrome was computing the absolutely-positioned element's
+      // box at 0x0 because the flex parent hadn't yet sized itself from its
+      // other children. By the time we reach here on a user-driven toggle
+      // click, all siblings (.container, .hero-flank-row, .trust-strip)
+      // have laid out — so inset: 0 resolves to the full hero rect.
+      hero.appendChild(videoEl);
       videoEl.load();
-      console.log('[hero-video] element inserted, src=', videoEl.src,
-                  ' rect=', videoEl.getBoundingClientRect().toJSON?.() ?? 'n/a');
+      // Read rect on next animation frame so layout has settled
+      requestAnimationFrame(() => {
+        const r = videoEl.getBoundingClientRect();
+        console.log('[hero-video] post-rAF rect=',
+          {w: r.width, h: r.height, top: r.top, left: r.left});
+      });
       return videoEl;
     }
 
