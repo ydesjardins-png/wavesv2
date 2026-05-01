@@ -57,10 +57,27 @@
     --cyan:       #00E5FF;
     --teal:       #1DE9C6;
     --gold:       #FFD166;
+    --coral:      #FF7E5F;     /* sunset peach */
+    --magenta:    #E859C0;     /* sunset pink */
     --white:      #FFFFFF;
     --off-white:  #F4F3FF;
     --text-muted: #9B97C5;
     --card-bg:    rgba(30,22,80,0.6);
+
+    /* WARM CARD GRADIENT — sunset glow at top-right corner fading to deep
+       navy on the rest of the card. Used by feature/review cards.
+       Reads as warmer than the old flat purple var(--card-bg). */
+    --card-warm-bg:
+      radial-gradient(ellipse 80% 60% at 100% 0%, rgba(232,89,192,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 0% 100%, rgba(91,82,216,0.10) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(40,28,80,0.65) 0%, rgba(28,18,56,0.65) 100%);
+    --card-warm-bg-hover:
+      radial-gradient(ellipse 90% 70% at 100% 0%, rgba(255,126,95,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 90% at 0% 100%, rgba(123,116,240,0.14) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(50,32,90,0.7) 0%, rgba(34,22,68,0.7) 100%);
+    --card-warm-border:       rgba(232,89,192,0.18);
+    --card-warm-border-hover: rgba(255,126,95,0.45);
+
     --glass:      rgba(91,82,216,0.12);
     --border:     rgba(160,154,245,0.18);
     --shadow:     0 24px 80px rgba(13,11,31,0.6);
@@ -616,15 +633,18 @@
     gap: 20px;
   }
   .feature-card {
-    background: var(--card-bg);
+    background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-warm-border);
     border-radius: var(--r-lg); padding: 32px 26px;
-    transition: all 0.3s;
+    transition: background 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
   }
   .feature-card:hover {
-    border-color: rgba(160,154,245,0.4);
+    background: var(--card-warm-bg-hover);
+    border-color: var(--card-warm-border-hover);
     transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(255,126,95,0.12), 0 4px 16px rgba(13,11,31,0.4);
   }
   .feature-icon {
     width: 52px; height: 52px; border-radius: var(--r-md);
@@ -635,7 +655,7 @@
   .icon-purple { background: rgba(91,82,216,0.2); }
   .icon-teal   { background: rgba(29,233,198,0.15); }
   .icon-cyan   { background: rgba(0,229,255,0.12); }
-  .icon-gold   { background: rgba(255,209,102,0.12); }
+  .icon-gold   { background: rgba(255,209,102,0.18); }
   .icon-violet { background: rgba(123,116,240,0.2); }
   .icon-blue   { background: rgba(79,195,247,0.12); }
 
@@ -653,13 +673,19 @@
     gap: 20px;
   }
   .review-card {
-    background: var(--card-bg);
+    background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-warm-border);
     border-radius: var(--r-lg); padding: 28px;
-    transition: all 0.3s;
+    transition: background 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
   }
-  .review-card:hover { transform: translateY(-4px); border-color: rgba(160,154,245,0.3); }
+  .review-card:hover {
+    background: var(--card-warm-bg-hover);
+    border-color: var(--card-warm-border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(255,126,95,0.12), 0 4px 16px rgba(13,11,31,0.4);
+  }
   .review-stars { margin-bottom: 14px; }
   .review-text {
     font-size: 0.9rem; color: rgba(255,255,255,0.85);
@@ -682,8 +708,11 @@
   /* ─── STATS ─── */
   .stats-section { padding: 80px 0; }
   .stats-card {
-    background: linear-gradient(135deg, rgba(59,53,176,0.3) 0%, rgba(91,82,216,0.15) 100%);
-    border: 1px solid rgba(160,154,245,0.25);
+    background:
+      radial-gradient(ellipse 60% 80% at 100% 0%, rgba(255,126,95,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 70% at 0% 100%, rgba(255,209,102,0.10) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(59,53,176,0.32) 0%, rgba(91,82,216,0.16) 100%);
+    border: 1px solid rgba(232,89,192,0.22);
     border-radius: var(--r-xl); padding: 60px 48px;
     display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 32px; text-align: center;
@@ -692,7 +721,7 @@
   .stats-card::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--royal), var(--iris), var(--teal), var(--cyan));
+    background: linear-gradient(90deg, var(--gold), var(--coral), var(--magenta), var(--iris), var(--teal), var(--cyan));
   }
   .stat-num {
     font-family: var(--font-display);
@@ -712,17 +741,18 @@
     border-radius: var(--r-md); margin-bottom: 12px;
     overflow: hidden; transition: border-color 0.2s;
   }
-  .faq-item.open { border-color: rgba(160,154,245,0.4); }
+  .faq-item.open { border-color: var(--card-warm-border-hover); }
   .faq-q {
     width: 100%; padding: 20px 24px;
-    background: var(--card-bg); border: none;
+    background: var(--card-warm-bg); border: none;
     color: var(--white); font-family: var(--font-body);
     font-size: 0.95rem; font-weight: 600;
     text-align: left; cursor: pointer;
     display: flex; justify-content: space-between; align-items: center;
     gap: 16px;
+    transition: background 0.25s;
   }
-  .faq-q:hover { background: rgba(30,22,80,0.8); }
+  .faq-q:hover { background: var(--card-warm-bg-hover); }
   .faq-chevron {
     width: 20px; height: 20px; flex-shrink: 0;
     transition: transform 0.3s;
@@ -740,15 +770,18 @@
   /* ─── FINAL CTA ─── */
   .cta-section { padding: 100px 0; }
   .cta-card {
-    background: linear-gradient(135deg, rgba(59,53,176,0.4) 0%, rgba(29,233,198,0.1) 100%);
-    border: 1px solid rgba(160,154,245,0.25);
+    background:
+      radial-gradient(ellipse 70% 80% at 100% 0%, rgba(255,126,95,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 70% at 0% 100%, rgba(232,89,192,0.14) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(59,53,176,0.38) 0%, rgba(29,233,198,0.10) 100%);
+    border: 1px solid rgba(232,89,192,0.28);
     border-radius: var(--r-xl); padding: 80px 48px;
     text-align: center; position: relative; overflow: hidden;
   }
   .cta-card::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--iris), var(--teal), var(--cyan));
+    background: linear-gradient(90deg, var(--gold), var(--coral), var(--magenta), var(--teal), var(--cyan));
   }
   .cta-title {
     font-family: var(--font-display);
@@ -1085,15 +1118,18 @@
     gap: 20px;
   }
   .feature-card {
-    background: var(--card-bg);
+    background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-warm-border);
     border-radius: var(--r-lg); padding: 32px 26px;
-    transition: all 0.3s;
+    transition: background 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
   }
   .feature-card:hover {
-    border-color: rgba(160,154,245,0.4);
+    background: var(--card-warm-bg-hover);
+    border-color: var(--card-warm-border-hover);
     transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(255,126,95,0.12), 0 4px 16px rgba(13,11,31,0.4);
   }
   .feature-icon {
     width: 52px; height: 52px; border-radius: var(--r-md);
@@ -1104,7 +1140,7 @@
   .icon-purple { background: rgba(91,82,216,0.2); }
   .icon-teal   { background: rgba(29,233,198,0.15); }
   .icon-cyan   { background: rgba(0,229,255,0.12); }
-  .icon-gold   { background: rgba(255,209,102,0.12); }
+  .icon-gold   { background: rgba(255,209,102,0.18); }
   .icon-violet { background: rgba(123,116,240,0.2); }
   .icon-blue   { background: rgba(79,195,247,0.12); }
 
@@ -1122,13 +1158,19 @@
     gap: 20px;
   }
   .review-card {
-    background: var(--card-bg);
+    background: var(--card-warm-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-warm-border);
     border-radius: var(--r-lg); padding: 28px;
-    transition: all 0.3s;
+    transition: background 0.35s, border-color 0.35s, transform 0.35s, box-shadow 0.35s;
   }
-  .review-card:hover { transform: translateY(-4px); border-color: rgba(160,154,245,0.3); }
+  .review-card:hover {
+    background: var(--card-warm-bg-hover);
+    border-color: var(--card-warm-border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(255,126,95,0.12), 0 4px 16px rgba(13,11,31,0.4);
+  }
   .review-stars { margin-bottom: 14px; }
   .review-text {
     font-size: 0.9rem; color: rgba(255,255,255,0.85);
@@ -1151,8 +1193,11 @@
   /* ─── STATS ─── */
   .stats-section { padding: 80px 0; }
   .stats-card {
-    background: linear-gradient(135deg, rgba(59,53,176,0.3) 0%, rgba(91,82,216,0.15) 100%);
-    border: 1px solid rgba(160,154,245,0.25);
+    background:
+      radial-gradient(ellipse 60% 80% at 100% 0%, rgba(255,126,95,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 70% at 0% 100%, rgba(255,209,102,0.10) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(59,53,176,0.32) 0%, rgba(91,82,216,0.16) 100%);
+    border: 1px solid rgba(232,89,192,0.22);
     border-radius: var(--r-xl); padding: 60px 48px;
     display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 32px; text-align: center;
@@ -1161,7 +1206,7 @@
   .stats-card::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--royal), var(--iris), var(--teal), var(--cyan));
+    background: linear-gradient(90deg, var(--gold), var(--coral), var(--magenta), var(--iris), var(--teal), var(--cyan));
   }
   .stat-num {
     font-family: var(--font-display);
@@ -1181,17 +1226,18 @@
     border-radius: var(--r-md); margin-bottom: 12px;
     overflow: hidden; transition: border-color 0.2s;
   }
-  .faq-item.open { border-color: rgba(160,154,245,0.4); }
+  .faq-item.open { border-color: var(--card-warm-border-hover); }
   .faq-q {
     width: 100%; padding: 20px 24px;
-    background: var(--card-bg); border: none;
+    background: var(--card-warm-bg); border: none;
     color: var(--white); font-family: var(--font-body);
     font-size: 0.95rem; font-weight: 600;
     text-align: left; cursor: pointer;
     display: flex; justify-content: space-between; align-items: center;
     gap: 16px;
+    transition: background 0.25s;
   }
-  .faq-q:hover { background: rgba(30,22,80,0.8); }
+  .faq-q:hover { background: var(--card-warm-bg-hover); }
   .faq-chevron {
     width: 20px; height: 20px; flex-shrink: 0;
     transition: transform 0.3s;
@@ -1209,15 +1255,18 @@
   /* ─── FINAL CTA ─── */
   .cta-section { padding: 100px 0; }
   .cta-card {
-    background: linear-gradient(135deg, rgba(59,53,176,0.4) 0%, rgba(29,233,198,0.1) 100%);
-    border: 1px solid rgba(160,154,245,0.25);
+    background:
+      radial-gradient(ellipse 70% 80% at 100% 0%, rgba(255,126,95,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 70% at 0% 100%, rgba(232,89,192,0.14) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(59,53,176,0.38) 0%, rgba(29,233,198,0.10) 100%);
+    border: 1px solid rgba(232,89,192,0.28);
     border-radius: var(--r-xl); padding: 80px 48px;
     text-align: center; position: relative; overflow: hidden;
   }
   .cta-card::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--iris), var(--teal), var(--cyan));
+    background: linear-gradient(90deg, var(--gold), var(--coral), var(--magenta), var(--teal), var(--cyan));
   }
   .cta-title {
     font-family: var(--font-display);
