@@ -212,6 +212,86 @@
   }
 
   .hero .container { position: relative; z-index: 1; }
+
+  /* ───────────────────────── HERO MEDIA TOGGLE ─────────────────────────
+     Lets desktop users swap the static image background for a looping
+     video and back again. Toggle hidden on mobile + reduced-motion. */
+  .hero-video {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .hero.video-on .hero-video { opacity: 1; }
+  .hero.video-on::before {
+    background:
+      linear-gradient(180deg,
+        rgba(13,11,31,0.65) 0%,
+        rgba(13,11,31,0.35) 14%,
+        rgba(13,11,31,0.00) 28%,
+        rgba(13,11,31,0.00) 56%,
+        rgba(13,11,31,0.55) 72%,
+        rgba(13,11,31,0.88) 88%,
+        rgba(13,11,31,0.96) 100%);
+  }
+
+  .hero-media-toggle {
+    position: absolute; top: 96px; right: 32px; z-index: 6;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px 6px 14px;
+    border-radius: 100px;
+    background: rgba(13,11,31,0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.18);
+    font-family: var(--font-display);
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .hero-media-toggle:hover {
+    background: rgba(13,11,31,0.75);
+    border-color: rgba(29,233,198,0.45);
+    transform: translateY(-1px);
+  }
+  .hero-media-toggle .toggle-track {
+    display: inline-flex; align-items: center;
+    width: 36px; height: 18px; border-radius: 100px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.16);
+    padding: 1px;
+    transition: background 0.25s, border-color 0.25s;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+  .hero-media-toggle .toggle-knob {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--white), var(--periwinkle));
+    transition: transform 0.25s cubic-bezier(0.2,0.7,0.2,1), background 0.25s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .hero.video-on .hero-media-toggle .toggle-track {
+    background: linear-gradient(135deg, rgba(29,233,198,0.4), rgba(0,229,255,0.4));
+    border-color: rgba(29,233,198,0.6);
+  }
+  .hero.video-on .hero-media-toggle .toggle-knob {
+    transform: translateX(18px);
+    background: linear-gradient(135deg, var(--teal), var(--cyan));
+  }
+
+  @media (max-width: 1023px) {
+    .hero-media-toggle { display: none; }
+    .hero-video { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-media-toggle { display: none; }
+    .hero-video { display: none; }
+  }
+
   .hero-grid { text-align: center; }
 
   /* MIDDLE FLANK ROW — two glass pills flanking the CTAs at the bottom.
@@ -2262,6 +2342,17 @@
 <main id="main-content">
 <section class="hero">
 
+  <!-- Media toggle — desktop only, swaps static image ⇄ looping video -->
+  <button type="button" class="hero-media-toggle"
+          aria-label="Toggle hero between image and video"
+          aria-pressed="false"
+          title="Switch hero between image and video">
+    <span aria-hidden="true">VIDEO</span>
+    <span class="toggle-track" aria-hidden="true">
+      <span class="toggle-knob"></span>
+    </span>
+  </button>
+
   <!-- TOP: headline floats in the upper sky, above the bills -->
   <div class="container">
     <div class="hero-grid">
@@ -2679,6 +2770,64 @@
 </div>
 
 <script>
+  // ── HERO MEDIA TOGGLE (image ⇄ video) ─────────────────────────────────────
+  // Lazy-loads the video on first toggle to avoid the bandwidth cost for users
+  // who never opt in. Persists choice for the session via sessionStorage.
+  (function setupHeroMediaToggle() {
+    const hero = document.querySelector('.hero');
+    const toggle = document.querySelector('.hero-media-toggle');
+    if (!hero || !toggle) return;
+
+    const STORAGE_KEY = 'waves:hero-media';
+    const VIDEO_SRC = '/hero-video.mp4'; // wired up when the file is uploaded
+
+    let videoEl = null;
+
+    function ensureVideo() {
+      if (videoEl) return videoEl;
+      videoEl = document.createElement('video');
+      videoEl.className = 'hero-video';
+      videoEl.muted = true;
+      videoEl.loop = true;
+      videoEl.playsInline = true;
+      videoEl.autoplay = true;
+      videoEl.preload = 'metadata';
+      videoEl.setAttribute('aria-hidden', 'true');
+      videoEl.src = VIDEO_SRC;
+      // Insert as first child of .hero so it sits behind ::before/::after overlays
+      hero.insertBefore(videoEl, hero.firstChild);
+      return videoEl;
+    }
+
+    function setMode(mode) {
+      const useVideo = mode === 'video';
+      if (useVideo) {
+        const v = ensureVideo();
+        // Wait until the video has any data before swapping; falls back gracefully if it errors
+        const playPromise = v.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {/* autoplay blocked — toggle still flips visually */});
+        }
+        hero.classList.add('video-on');
+        toggle.setAttribute('aria-pressed', 'true');
+      } else {
+        if (videoEl) videoEl.pause();
+        hero.classList.remove('video-on');
+        toggle.setAttribute('aria-pressed', 'false');
+      }
+      try { sessionStorage.setItem(STORAGE_KEY, mode); } catch (e) {/* private mode */}
+    }
+
+    // Restore preference on load (default: image)
+    let saved = 'image';
+    try { saved = sessionStorage.getItem(STORAGE_KEY) || 'image'; } catch (e) {}
+    if (saved === 'video') setMode('video');
+
+    toggle.addEventListener('click', () => {
+      setMode(hero.classList.contains('video-on') ? 'image' : 'video');
+    });
+  })();
+
   // ── NAVBAR SCROLL (rAF-batched — prevents forced reflow) ─────────────────
   const mainNav = document.getElementById('main-nav');
   let scrollTicking = false;
