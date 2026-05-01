@@ -820,11 +820,28 @@
     background:
       radial-gradient(ellipse 60% 35% at 50% 100%, rgba(91,82,216,0.10) 0%, transparent 65%);
   }
-  .faq-grid { max-width: 760px; margin: 0 auto; }
+  .faq-grid {
+    max-width: 1080px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    grid-auto-flow: column;
+    gap: 12px 20px;
+  }
+  .faq-item { margin-bottom: 0; }
+  @media (max-width: 768px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      grid-auto-flow: row;
+      max-width: 760px;
+    }
+  }
   .faq-item {
     border: 1px solid var(--border);
-    border-radius: var(--r-md); margin-bottom: 12px;
+    border-radius: var(--r-md);
     overflow: hidden; transition: border-color 0.2s;
+    align-self: start;
   }
   .faq-item.open { border-color: var(--card-warm-border-hover); }
   .faq-q {
@@ -849,7 +866,7 @@
     transition: max-height 0.4s ease, padding 0.3s;
     background: rgba(13,11,31,0.4);
   }
-  .faq-item.open .faq-a { max-height: 300px; }
+  .faq-item.open .faq-a { max-height: 600px; }
   .faq-a-inner { padding: 0 24px 20px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
 
   /* ─── FINAL CTA ─── */
@@ -1455,11 +1472,28 @@
     background:
       radial-gradient(ellipse 60% 35% at 50% 100%, rgba(91,82,216,0.10) 0%, transparent 65%);
   }
-  .faq-grid { max-width: 760px; margin: 0 auto; }
+  .faq-grid {
+    max-width: 1080px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    grid-auto-flow: column;
+    gap: 12px 20px;
+  }
+  .faq-item { margin-bottom: 0; }
+  @media (max-width: 768px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      grid-auto-flow: row;
+      max-width: 760px;
+    }
+  }
   .faq-item {
     border: 1px solid var(--border);
-    border-radius: var(--r-md); margin-bottom: 12px;
+    border-radius: var(--r-md);
     overflow: hidden; transition: border-color 0.2s;
+    align-self: start;
   }
   .faq-item.open { border-color: var(--card-warm-border-hover); }
   .faq-q {
@@ -1484,7 +1518,7 @@
     transition: max-height 0.4s ease, padding 0.3s;
     background: rgba(13,11,31,0.4);
   }
-  .faq-item.open .faq-a { max-height: 300px; }
+  .faq-item.open .faq-a { max-height: 600px; }
   .faq-a-inner { padding: 0 24px 20px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
 
   /* ─── FINAL CTA ─── */
@@ -2266,6 +2300,34 @@
           <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="faq-a"><div class="faq-a-inner">You must be at least 18 years old, a resident of a province we serve, have a steady source of income for the past 3 months, a net monthly income of at least $800, and an active Canadian bank account that supports pre-authorized debits.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How much can I borrow?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">First-time customers can borrow between $500 and $1,000. The amount you qualify for is based on your income and ability to repay comfortably. Existing customers in good standing may qualify for higher amounts on future loans.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Are there hidden fees or charges?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">No hidden fees. The cost of borrowing is shown clearly before you sign — a flat 23% APR with no application fees, origination fees, or prepayment penalties. The total amount you'll repay is disclosed upfront in your loan agreement.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What if I can't make a payment on time?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">If you're going to miss a payment, contact us as soon as possible — our Canadian-based support team will work with you to adjust your schedule when we can. Communicating early is always better than missing silently. NSF fees may apply if a payment fails to clear.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is my information safe?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. We use 256-bit SSL encryption to protect your data in transit, and bank-grade security to store it. We never sell your personal information to third parties. Bank account verification is done through Flinks, a trusted Canadian provider used by major financial institutions.</div></div>
       </div>
     </div>
   </div>
