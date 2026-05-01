@@ -269,7 +269,9 @@
 
   .hero-media-toggle {
     position: absolute; top: 100px; right: 24px; z-index: 999;
-    display: inline-flex !important; align-items: center; gap: 8px;
+    /* Hidden by default — video plays on page load. To re-enable the
+       VIDEO/IMAGE toggle UI, change this back to inline-flex. */
+    display: none !important; align-items: center; gap: 8px;
     padding: 8px 16px;
     border-radius: 100px;
     background: rgba(13,11,31,0.85);
@@ -2894,9 +2896,11 @@
       try { sessionStorage.setItem(STORAGE_KEY, mode); } catch (e) {/* private mode */}
     }
 
-    // Restore preference on load (default: image)
-    let saved = 'image';
-    try { saved = sessionStorage.getItem(STORAGE_KEY) || 'image'; } catch (e) {}
+    // Default to video mode on first visit; respect a saved 'image' preference
+    // if the user explicitly chose it last time. (Toggle is hidden from the
+    // UI, but sessionStorage persistence still works should it be re-enabled.)
+    let saved = 'video';
+    try { saved = sessionStorage.getItem(STORAGE_KEY) || 'video'; } catch (e) {}
     if (saved === 'video') setMode('video');
 
     toggle.addEventListener('click', () => {
