@@ -362,38 +362,6 @@
     border-color: rgba(255,255,255,0.32);
   }
 
-  /* TRUST STRIP — full-width stripe pinned to the floor of the hero */
-  .trust-strip {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    display: flex; align-items: center; justify-content: center;
-    gap: 36px;
-    padding: 18px 32px;
-    background: rgba(13,11,31,0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    z-index: 2;
-  }
-  .trust-strip-item { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); }
-  .trust-strip-num {
-    font-size: 1.05rem; font-weight: 800; color: var(--white);
-    line-height: 1.1; letter-spacing: -0.01em;
-  }
-  .trust-strip-num.gradient {
-    background: linear-gradient(135deg, var(--white) 0%, var(--periwinkle) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .trust-strip-num .stars-inline {
-    color: var(--gold); font-size: 0.95rem; margin-right: 4px;
-    text-shadow: 0 0 12px rgba(255,209,102,0.5);
-  }
-  .trust-strip-label {
-    font-size: 0.78rem; color: rgba(255,255,255,0.7);
-    font-weight: 500; font-family: var(--font-body);
-  }
-  .trust-strip-sep { width: 1px; height: 24px; background: rgba(255,255,255,0.14); }
-
   /* ─── MOBILE HERO TUNING ─── */
   @media (max-width: 768px) {
     .hero {
@@ -419,10 +387,6 @@
     .hero-title { margin-bottom: 16px; line-height: 1.08; }
     .hero-subtitle { margin-bottom: 28px; font-size: 1rem; max-width: 100%; }
     .btn-hero-primary, .btn-hero-ghost { padding: 14px 22px; font-size: 0.95rem; }
-    .trust-strip { gap: 14px; padding: 12px 16px; flex-wrap: wrap; }
-    .trust-strip-num { font-size: 0.95rem; }
-    .trust-strip-label { font-size: 0.7rem; }
-    .trust-strip-sep { display: none; }
   }
   @media (max-width: 480px) {
     .hero-actions { width: 100%; justify-content: center; }
@@ -1717,23 +1681,6 @@
       </ul>
     </div>
   </div>
-
-  <div class="trust-strip hero-fade d5">
-    <div class="trust-strip-item">
-      <span class="trust-strip-num"><span class="stars-inline">★</span>4.9</span>
-      <span class="trust-strip-label">Google Reviews</span>
-    </div>
-    <div class="trust-strip-sep"></div>
-    <div class="trust-strip-item">
-      <span class="trust-strip-num gradient">50,000+</span>
-      <span class="trust-strip-label">Canadians Helped</span>
-    </div>
-    <div class="trust-strip-sep"></div>
-    <div class="trust-strip-item">
-      <span class="trust-strip-num">2 min</span>
-      <span class="trust-strip-label">Avg. e-Transfer</span>
-    </div>
-  </div>
 </section>
 
 <!-- ═══════════════════════════════ TRUST BAR ═══════════════════════════════ -->
@@ -1741,10 +1688,10 @@
   <div class="container">
     <div class="trust-inner">
       <div class="trust-item">
-        <div class="trust-icon">🔒</div>
+        <div class="trust-icon" style="color:var(--gold);">★</div>
         <div>
-          <div class="trust-label">256-bit SSL Encrypted</div>
-          <div class="trust-sub">Bank-level security</div>
+          <div class="trust-label">4.9 / 5 — Google Reviews</div>
+          <div class="trust-sub">Trusted by real customers</div>
         </div>
       </div>
       <div class="trust-sep"></div>
@@ -1757,10 +1704,10 @@
       </div>
       <div class="trust-sep"></div>
       <div class="trust-item">
-        <div class="trust-icon">⚡</div>
+        <div class="trust-icon">🍁</div>
         <div>
-          <div class="trust-label">e-Transfer in Minutes</div>
-          <div class="trust-sub">Available 24/7</div>
+          <div class="trust-label">50,000+ Canadians Helped</div>
+          <div class="trust-sub">Coast to coast since day one</div>
         </div>
       </div>
       <div class="trust-sep"></div>
