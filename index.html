@@ -224,11 +224,13 @@
        z=5  → .container with all content
        z=999→ .hero-media-toggle */
   .hero-video {
-    position: absolute; inset: 0; z-index: 1;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
     width: 100%; height: 100%;
+    z-index: 1;
     object-fit: cover;
-    /* DEBUG: bright cyan fill so we can see whether the element is actually
-       in the right rectangle even before the video paints its first frame. */
+    /* DEBUG: keep magenta fill until playback is confirmed visible.
+       Will remove in next commit. */
     background-color: #ff00ff;
     opacity: 0;
     pointer-events: none;
@@ -2804,10 +2806,12 @@
       videoEl.preload = 'auto';
       videoEl.poster = '/hero-video-poster.jpeg';
       videoEl.setAttribute('aria-hidden', 'true');
-      // Cache-bust query so any stale CDN/browser-cached entries are bypassed
-      // during this debug pass. Remove ?v=N once playback is confirmed.
-      videoEl.src = '/hero-video.mp4?v=4';
-      videoEl.crossOrigin = 'anonymous';
+      // Set intrinsic dimensions via attributes — without these, some
+      // browsers compute the absolutely-positioned element's box at 0x0
+      // until the first frame paints.
+      videoEl.width = 1920;
+      videoEl.height = 1080;
+      videoEl.src = '/hero-video.mp4?v=5';
 
       // Diagnostic event listeners — visible in DevTools console
       const log = (label) => () => console.log(`[hero-video] ${label}`);
