@@ -244,15 +244,27 @@
   }
   .hero.video-on { background-image: none !important; background-color: transparent; }
   .hero.video-on::before {
+    /* Veil tuned for video mode — upper area is where text now lives so it
+       gets the darker zone; middle/lower stays clear so the wave + surfer
+       carry the visual weight, faint dark anchor at the very bottom. */
     background:
       linear-gradient(180deg,
-        rgba(13,11,31,0.65) 0%,
-        rgba(13,11,31,0.35) 14%,
-        rgba(13,11,31,0.00) 28%,
-        rgba(13,11,31,0.00) 56%,
-        rgba(13,11,31,0.55) 72%,
-        rgba(13,11,31,0.88) 88%,
-        rgba(13,11,31,0.96) 100%);
+        rgba(13,11,31,0.75) 0%,
+        rgba(13,11,31,0.55) 18%,
+        rgba(13,11,31,0.20) 38%,
+        rgba(13,11,31,0.00) 55%,
+        rgba(13,11,31,0.00) 80%,
+        rgba(13,11,31,0.55) 95%,
+        rgba(13,11,31,0.85) 100%);
+  }
+  /* In video mode: top-anchor the content cluster (headline + pills + CTAs)
+     so the surfer/wave below has the lower half to itself. */
+  .hero.video-on {
+    justify-content: flex-start;
+    gap: 28px;
+  }
+  .hero.video-on .hero-flank-row {
+    margin-top: 8px;
   }
 
   .hero-media-toggle {
