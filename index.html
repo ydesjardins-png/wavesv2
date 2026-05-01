@@ -223,20 +223,29 @@
        z=3  → ::after subtle top fade
        z=5  → .container with all content
        z=999→ .hero-media-toggle */
-  .hero-video {
+  /* The video lives inside this wrapper. The wrapper is the abs-positioned
+     element; the video is a normal block child sized via 100%/100%. This
+     decouples the <video> from .hero's flex formatting context entirely —
+     even when .hero is display:flex, the wrapper is taken out of flow and
+     the video inside it sees a normal containing block. */
+  .hero-video-wrap {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     width: 100%; height: 100%;
     z-index: 1;
-    object-fit: cover;
-    /* DEBUG: keep magenta fill until playback is confirmed visible.
-       Will remove in next commit. */
-    background-color: #ff00ff;
-    opacity: 0;
+    overflow: hidden;
     pointer-events: none;
+    opacity: 0;
     transition: opacity 0.5s ease;
+    /* DEBUG fill */
+    background-color: #ff00ff;
   }
-  .hero.video-on .hero-video { opacity: 1; }
+  .hero.video-on .hero-video-wrap { opacity: 1; }
+  .hero-video {
+    display: block;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
   .hero.video-on::before {
     background:
       linear-gradient(180deg,
@@ -2794,9 +2803,16 @@
     const STORAGE_KEY = 'waves:hero-media';
 
     let videoEl = null;
+    let wrapEl = null;
 
     function ensureVideo() {
       if (videoEl) return videoEl;
+
+      // Wrapper isolates video from .hero's flex formatting context
+      wrapEl = document.createElement('div');
+      wrapEl.className = 'hero-video-wrap';
+      wrapEl.setAttribute('aria-hidden', 'true');
+
       videoEl = document.createElement('video');
       videoEl.className = 'hero-video';
       videoEl.muted = true;
@@ -2805,15 +2821,11 @@
       videoEl.autoplay = true;
       videoEl.preload = 'auto';
       videoEl.poster = '/hero-video-poster.jpeg';
-      videoEl.setAttribute('aria-hidden', 'true');
-      // Set intrinsic dimensions via attributes — without these, some
-      // browsers compute the absolutely-positioned element's box at 0x0
-      // until the first frame paints.
       videoEl.width = 1920;
       videoEl.height = 1080;
-      videoEl.src = '/hero-video.mp4?v=5';
+      videoEl.src = '/hero-video.mp4?v=6';
 
-      // Diagnostic event listeners — visible in DevTools console
+      // Diagnostic event listeners
       const log = (label) => () => console.log(`[hero-video] ${label}`);
       videoEl.addEventListener('loadstart',  log('loadstart'));
       videoEl.addEventListener('loadedmetadata', log('loadedmetadata'));
@@ -2828,19 +2840,16 @@
         console.warn('[hero-video] ERROR code', e && e.code, 'message:', e && e.message);
       });
 
-      // Append AT THE END of .hero (not as firstChild). When inserted as
-      // firstChild, Chrome was computing the absolutely-positioned element's
-      // box at 0x0 because the flex parent hadn't yet sized itself from its
-      // other children. By the time we reach here on a user-driven toggle
-      // click, all siblings (.container, .hero-flank-row, .trust-strip)
-      // have laid out — so inset: 0 resolves to the full hero rect.
-      hero.appendChild(videoEl);
+      wrapEl.appendChild(videoEl);
+      hero.appendChild(wrapEl);
       videoEl.load();
-      // Read rect on next animation frame so layout has settled
+
+      // Log wrapper dimensions next frame
       requestAnimationFrame(() => {
-        const r = videoEl.getBoundingClientRect();
-        console.log('[hero-video] post-rAF rect=',
-          {w: r.width, h: r.height, top: r.top, left: r.left});
+        const wr = wrapEl.getBoundingClientRect();
+        const vr = videoEl.getBoundingClientRect();
+        console.log('[hero-video] wrapper rect:', `${wr.width}x${wr.height} @ (${wr.left},${wr.top})`);
+        console.log('[hero-video] video rect:  ', `${vr.width}x${vr.height} @ (${vr.left},${vr.top})`);
       });
       return videoEl;
     }
