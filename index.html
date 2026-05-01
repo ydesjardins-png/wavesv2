@@ -2823,7 +2823,9 @@
       videoEl.poster = '/hero-video-poster.jpeg';
       videoEl.width = 1920;
       videoEl.height = 1080;
-      videoEl.src = '/hero-video.mp4?v=6';
+      // Inline styles: bulletproof against any cascade override
+      videoEl.style.cssText = 'display:block;position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
+      videoEl.src = '/hero-video.mp4?v=7';
 
       // Diagnostic event listeners
       const log = (label) => () => console.log(`[hero-video] ${label}`);
