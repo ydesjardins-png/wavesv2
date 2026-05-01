@@ -197,18 +197,29 @@
   .hero .container { position: relative; z-index: 1; }
   .hero-grid { text-align: center; }
 
-  /* MIDDLE FLANK ROW — two glass pills flanking the bills.
-     justify-content: center with a viewport-tracking gap. The gap roughly
-     matches the bills' rendered width, so the pills' inner edges kiss the
-     hand+bills on both sides at any common desktop viewport — and the
-     whole row stays centered, in the same visual column as the CTAs below. */
+  /* MIDDLE FLANK ROW — two glass pills flanking the CTAs at the bottom.
+     Three-column layout: left pill | centered CTA cluster | right pill.
+     align-items: flex-end keeps pills' bottoms level with CTA buttons
+     even when pills have more lines than the CTA row. */
   .hero-flank-row {
     position: relative; z-index: 1;
     width: 100%; max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
-    display: flex; align-items: center; justify-content: center;
-    gap: clamp(360px, 30vw, 720px);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 32px;
+  }
+  .hero-flank-row > .hero-flank-pill:first-child {
+    justify-self: end;
+  }
+  .hero-flank-row > .hero-flank-pill:last-child {
+    justify-self: start;
+  }
+  .hero-flank-row .hero-actions {
+    /* center the CTA cluster within its grid column */
+    margin: 0;
   }
   .hero-flank-pill {
     flex: 0 1 260px;
@@ -252,16 +263,14 @@
   }
 
   @media (max-width: 1023px) {
+    /* Below desktop: hide the flank pills entirely (per design),
+       collapse the row so its centered CTA still works as a single column. */
     .hero-flank-row {
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
+      grid-template-columns: 1fr;
+      gap: 0;
     }
-    .hero-flank-pill {
-      flex: 0 0 auto;
-      max-width: 380px; width: 100%;
-      /* keep text-align: left so checkmarks line up cleanly even on mobile */
-    }
+    .hero-flank-pill { display: none; }
+    .hero-flank-row .hero-actions { justify-content: center; }
   }
 
   /* Staggered entrance — each line drifts up & fades in */
@@ -1678,7 +1687,7 @@
     </div>
   </div>
 
-  <!-- MIDDLE: two glass pills flanking the bills -->
+  <!-- BOTTOM ROW: left pill | centered CTAs | right pill (pills hidden < 1024px) -->
   <div class="hero-flank-row">
     <div class="hero-flank-pill hero-fade d2">
       <ul class="flank-list">
@@ -1687,26 +1696,22 @@
         <li>Flexible repayment.</li>
       </ul>
     </div>
+
+    <div class="hero-actions hero-fade d4">
+      <a href="apply.html" class="btn-hero-primary">
+        Apply Now <span class="arrow">→</span>
+      </a>
+      <a href="#how-it-works" class="btn-hero-ghost">
+        How It Works
+      </a>
+    </div>
+
     <div class="hero-flank-pill right hero-fade d3">
       <ul class="flank-list">
         <li>Apply in 5 minutes.</li>
         <li>Sign your contract online.</li>
         <li>Wait for your money.</li>
       </ul>
-    </div>
-  </div>
-
-  <!-- BOTTOM: CTAs anchored above the trust strip -->
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-actions hero-fade d4">
-        <a href="apply.html" class="btn-hero-primary">
-          Apply Now <span class="arrow">→</span>
-        </a>
-        <a href="#how-it-works" class="btn-hero-ghost">
-          How It Works
-        </a>
-      </div>
     </div>
   </div>
 
